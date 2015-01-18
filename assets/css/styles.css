@@ -16,6 +16,12 @@ header h2 {
     text-align: center;
 }
 
+header h1 a,
+header h1 a:hover {
+    color: white;
+    text-decoration: none;
+}
+
 .terminal {
     max-width: 800px;
     margin: 0 auto;

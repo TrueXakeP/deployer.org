@@ -86,7 +86,9 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     ]));
 
     return $response;
-})->value('page', 'getting-started');
+})
+    ->assert('page', '[\w/-]+')
+    ->value('page', 'getting-started');
 
 if ($app['cache']) {
     $app['http_cache']->run();
