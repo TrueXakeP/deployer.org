@@ -1,0 +1,29 @@
+---
+layout: main
+---
+<div class="row">
+    <div class="col-md-2 visible-lg-block">
+        <ul id="nav" class="nav nav-stacked">
+            <li><a href="index.html">Introduction</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="servers.html">Servers</a></li>
+            <li><a href="stages.html">Stages</a></li>
+            <li><a href="verbosity.html">Verbosity</a></li>
+            <li><a href="environment.html">Environment</a></li>
+            <li><a href="functions.html">Functions</a></li>
+            <li><a href="recipes.html">Recipes</a></li>
+            <li><a href="examples.html">Examples</a></li>
+        </ul>
+        <small>
+            Found a typo? Is something wrong in this documentation?<br>
+            Just <a href="https://github.com/elfet/deployer/edit/gh-pages{{page.url|replace:'.html','.md'}}">fork and
+            edit</a> it!
+        </small>
+    </div>
+
+    <div class="col-md-10">
+        {{ content }}
+    </div>
+</div>

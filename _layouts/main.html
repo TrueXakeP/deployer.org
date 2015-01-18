@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Deployer &mdash; {{page.title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/lib/prism.css">
+    <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/lib/prism.css">
 </head>
 <body>
 <a href="https://github.com/elfet/deployer"><img style="position: absolute; top: 0; right: 0; border: 0;"
@@ -19,53 +19,14 @@
 
         <h2>Deployment Tool for PHP</h2>
 
-        <div class="terminal">
-            <div class="toolbar">
-                <i class="x"></i>
-                <i class="minus"></i>
-                <i class="plus"></i>
-                <img src="assets/img/home.png" alt="">TryDeployer &mdash; 800x300
-            </div>
-            <div class="code">
-                <div class="console">Press enter to submit commands.<br></div>
-                <form>
-                    <label for="input">&gt;</label>
-
-                    <div class="input">
-                        <input type="text" value="" id="input">
-                    </div>
-                </form>
-            </div>
-        </div>
+        {% if page.header %}
+            {% include {{page.header}} %}
+        {% endif %}
     </div>
 </header>
 <section>
     <div class="container">
-        <div class="row">
-            <div class="col-md-2 visible-lg-block">
-                <ul id="nav" class="nav nav-stacked">
-                    <li><a href="index.html">Introduction</a></li>
-                    <li><a href="getting-started.html">Getting Started</a></li>
-                    <li><a href="installation.html">Installation</a></li>
-                    <li><a href="tasks.html">Tasks</a></li>
-                    <li><a href="servers.html">Servers</a></li>
-                    <li><a href="stages.html">Stages</a></li>
-                    <li><a href="verbosity.html">Verbosity</a></li>
-                    <li><a href="environment.html">Environment</a></li>
-                    <li><a href="functions.html">Functions</a></li>
-                    <li><a href="recipes.html">Recipes</a></li>
-                    <li><a href="examples.html">Examples</a></li>
-                </ul>
-                <small>
-                    Found a typo? Is something wrong in this documentation?<br>
-                    Just <a href="https://github.com/elfet/deployer/edit/gh-pages{{page.url|replace:'.html','.md'}}">fork and edit</a> it!
-                </small>
-            </div>
-
-            <div class="col-md-10">
-                {{ content }}
-            </div>
-        </div>
+        {{ content }}
     </div>
 </section>
 
@@ -76,10 +37,10 @@
     </div>
 </footer>
 
-<script src="assets/lib/jquery.min.js"></script>
-<script src="assets/lib/autocomplete.js"></script>
-<script src="assets/lib/prism.js"></script>
-<script src="assets/lib/console.js"></script>
+<script src="/assets/lib/jquery.min.js"></script>
+<script src="/assets/lib/autocomplete.js"></script>
+<script src="/assets/lib/prism.js"></script>
+<script src="/assets/lib/console.js"></script>
 
 <script type="text/javascript">
 

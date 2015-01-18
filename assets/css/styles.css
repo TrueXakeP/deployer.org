@@ -6,7 +6,7 @@ body {
 header {
     color: #ffffff;
     background-color: #4183c4;
-    height: 500px;
+    padding-bottom: 15px;
 }
 
 header h1,
@@ -48,10 +48,10 @@ header h2 {
 
 .toolbar i {
     position: absolute;
-    top: 6px;
+    top: 8px;
     display: inline-block;
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
     border-radius: 100%;
 }
 
@@ -65,12 +65,12 @@ header h2 {
 }
 
 .toolbar i.minus {
-    left: 35px;
+    left: 30px;
     background-color: #F8BD33;
 }
 
 .toolbar i.plus {
-    left: 60px;
+    left: 50px;
     background-color: #5EC034;
 }
 
