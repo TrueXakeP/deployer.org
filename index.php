@@ -4,6 +4,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 require __DIR__ . '/vendor/autoload.php';
 
 $app = new Silex\Application(parse_ini_file(is_readable('config.ini') ? 'config.ini' : 'config.ini.dist'));
@@ -13,6 +16,83 @@ $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
     'http_cache.esi' => null,
 ));
 
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__ . '/pages',
+));
 
+$app['docs.path'] = __DIR__ . '/docs';
+
+$app->get('/', function (Request $request) use ($app) {
+    $response = new Response();
+    $response->setPublic();
+
+    $lastModified = new DateTime();
+    $lastModified->setTimestamp(filemtime($app['twig.path'] . '/index.twig'));
+    $response->setLastModified($lastModified);
+
+    if ($response->isNotModified($request)) {
+        return $response;
+    }
+
+    $response->headers->set('Content-Type', 'text/html');
+    $response->setCharset('UTF-8');
+    $response->setContent(render('index.twig'));
+
+    return $response;
+});
+
+
+$app->get('/docs/{page}', function ($page, Request $request) use ($app) {
+    $response = new Response();
+    $response->setPublic();
+
+    $file = new SplFileInfo($app['docs.path'] . '/' . $page . '.md');
+
+    $lastModified = new DateTime();
+    $lastModified->setTimestamp($file->getMTime());
+    $response->setLastModified($lastModified);
+
+    if ($response->isNotModified($request)) {
+        return $response;
+    }
+
+    $response->headers->set('Content-Type', 'text/html');
+    $response->setCharset('UTF-8');
+
+    $parser = new Parsedown();
+
+    $content = file_get_contents($file->getPathname());
+    if (preg_match('/#\s*(.*)/u', $content, $matches)) {
+        $title = $matches[1];
+    } else {
+        $title = '';
+    }
+    $content = preg_replace('/\((.*?)\.md\)/', '(' . $request->getBaseUrl() . '/docs/$1)', $content);
+    $content = $parser->text($content);
+
+    $menu = file_get_contents($app['docs.path'] . '/README.md');
+    $menu = preg_replace('/\((.*?)\.md\)/', '(' . $request->getBaseUrl() . '/docs/$1)', $menu);
+    $menu = $parser->text($menu);
+    $menu = str_replace('<ul>', '<ul id="nav" class="nav nav-stacked">', $menu);
+
+    $response->setContent(render('docs.twig', [
+        'title' => $title,
+        'menu' => $menu,
+        'content' => $content,
+    ]));
+
+    return $response;
+})->value('page', 'getting-started');
 
 $app['http_cache']->run();
+
+/**
+ * @param string $file
+ * @param array $params
+ * @return string
+ */
+function render($file, $params = [])
+{
+    global $app;
+    return $app['twig']->render($file, $params);
+}

@@ -1,0 +1,31 @@
+{% extends 'layout.twig' %}
+
+{% set title = 'Deployment Tool for PHP' %}
+
+{% block header %}
+    <div class="terminal">
+        <div class="toolbar">
+            <i class="x"></i>
+            <i class="minus"></i>
+            <i class="plus"></i>
+            <img src="/assets/img/home.png" alt="">TryDeployer &mdash; 800x300
+        </div>
+        <div class="code">
+            <div class="console">Press enter to submit commands.<br></div>
+            <form>
+                <label for="input">&gt;</label>
+
+                <div class="input">
+                    <input type="text" value="" id="input">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>Hello world</h1>
+    WOW<h2>
+    COME ON
+</h2>
+{% endblock %}
