@@ -20,7 +20,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/pages',
 ));
 
-$app['docs.path'] = __DIR__ . '/docs';
+$app['docs.path'] = __DIR__ . '/documentation';
 
 $app->get('/', function (Request $request) use ($app) {
     $response = new Response();
@@ -88,7 +88,11 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     return $response;
 })->value('page', 'getting-started');
 
-$app['http_cache']->run();
+if ($app['cache']) {
+    $app['http_cache']->run();
+} else {
+    $app->run();
+}
 
 /**
  * @param string $file
