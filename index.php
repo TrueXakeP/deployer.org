@@ -48,6 +48,10 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
 
     $file = new SplFileInfo($app['docs.path'] . '/' . $page . '.md');
 
+    if (!$file->isReadable()) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+
     $lastModified = new DateTime();
     $lastModified->setTimestamp($file->getMTime());
     $response->setLastModified($lastModified);
