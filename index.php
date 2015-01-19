@@ -89,6 +89,24 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
 })
     ->assert('page', '[\w/-]+')
     ->value('page', 'getting-started');
+    
+
+$app->post('update/docs', function (Request $request) {
+    $secret = $app['github_secret'];
+    $hubSignature = $request->headers['X-Hub-Signature'];
+ 
+    list($algo, $hash) = explode('=', $hubSignature, 2);
+ 
+    $payload = file_get_contents('php://input');
+    $data    = json_decode($payload, true);
+ 
+    $payloadHash = hash_hmac($algo, $payload, $secret);
+ 
+    if ($hash !== $payloadHash) {
+        return new Response('', 500)
+    }
+});    
+
 
 if ($app['cache']) {
     $app['http_cache']->run();
