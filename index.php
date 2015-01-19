@@ -122,6 +122,13 @@ $app->post('update/docs', function (Request $request) use ($app) {
 });    
 
 
+$app->get('update/self', function (Request $request) {
+    exec('git pull', $output);
+    exec('composer install', $output);
+    return join("\n", $output);
+});
+
+
 if ($app['cache']) {
     $app['http_cache']->run();
 } else {
