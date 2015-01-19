@@ -119,15 +119,6 @@ $app->post('update/docs', function (Request $request) use ($app) {
     if ($hash !== $payloadHash) {
         return new Response('', 500);
     }
-});    
-
-
-$app->get('update/self', function (Request $request) {
-
-    exec('git pull', $output);
-    exec('composer install --no-ansi --no-interaction --prefer-dist --no-dev', $output);
-
-    return new Response(join("\n", $output), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
 });
 
 
