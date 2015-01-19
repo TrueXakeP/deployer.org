@@ -105,7 +105,7 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     ->value('page', 'getting-started');
     
 // Auto update docs on GitHub Webhook.
-$app->post('update/docs', function (Request $request) {
+$app->post('update/docs', function (Request $request) use ($app) {
     $secret = $app['github_secret'];
     $hubSignature = $request->headers['X-Hub-Signature'];
  
@@ -117,7 +117,7 @@ $app->post('update/docs', function (Request $request) {
     $payloadHash = hash_hmac($algo, $payload, $secret);
  
     if ($hash !== $payloadHash) {
-        return new Response('', 500)
+        return new Response('', 500);
     }
 });    
 
