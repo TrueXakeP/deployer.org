@@ -9,7 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 require __DIR__ . '/vendor/autoload.php';
 
+// Init app with parameters from config.ini
+
 $app = new Silex\Application(parse_ini_file(is_readable('config.ini') ? 'config.ini' : 'config.ini.dist'));
+
+// Register HTTP Cache and Twig
 
 $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
     'http_cache.cache_dir' => __DIR__ . '/cache/',
@@ -20,8 +24,12 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/pages',
 ));
 
+// Set paths for Docs and for Deployer local repositories
 $app['docs.path'] = __DIR__ . '/documentation';
+$app['deployer.path'] = __DIR__ . '/deployer';
 
+// Show index.twig page on root request. 
+// Cache rendered response with validate file modify time.
 $app->get('/', function (Request $request) use ($app) {
     $response = new Response();
     $response->setPublic();
@@ -41,7 +49,8 @@ $app->get('/', function (Request $request) use ($app) {
     return $response;
 });
 
-
+// Get docs pages from markdown source, manually parse `.md` links.
+// Cache rendered response with validate file modify time.
 $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     $response = new Response();
     $response->setPublic();
@@ -66,6 +75,8 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     $parser = new Parsedown();
 
     $content = file_get_contents($file->getPathname());
+    
+    // Get title from first header.
     if (preg_match('/#\s*(.*)/u', $content, $matches)) {
         $title = $matches[1];
     } else {
@@ -74,9 +85,12 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     $content = preg_replace('/\((.*?)\.md\)/', '(' . $request->getBaseUrl() . '/docs/$1)', $content);
     $content = $parser->text($content);
 
+    // Get docs navigation from README.md
     $menu = file_get_contents($app['docs.path'] . '/README.md');
     $menu = preg_replace('/\((.*?)\.md\)/', '(' . $request->getBaseUrl() . '/docs/$1)', $menu);
     $menu = $parser->text($menu);
+    
+    // Put little style on nav.
     $menu = str_replace('<ul>', '<ul id="nav" class="nav nav-stacked">', $menu);
 
     $response->setContent(render('docs.twig', [
@@ -90,7 +104,7 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     ->assert('page', '[\w/-]+')
     ->value('page', 'getting-started');
     
-
+// Auto update docs on GitHub Webhook.
 $app->post('update/docs', function (Request $request) {
     $secret = $app['github_secret'];
     $hubSignature = $request->headers['X-Hub-Signature'];
@@ -115,6 +129,8 @@ if ($app['cache']) {
 }
 
 /**
+ * Render file with twig.
+ * 
  * @param string $file
  * @param array $params
  * @return string
