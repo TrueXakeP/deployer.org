@@ -3,3 +3,4 @@ cache/
 releases/
 .idea/
 .htaccess
+config.ini
