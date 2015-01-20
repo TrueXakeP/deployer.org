@@ -12,6 +12,28 @@
 
         <div class="col-md-10">
             {{ content|raw }}
+            <div id="bottom-nav"></div>
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(function () {
+            var current = $('.nav').find('a[href^="' + location.pathname + '"]').eq(0).parents('li'),
+                next = current.next().find('a'),
+                prev = current.prev().find('a'),
+                nav = [];
+
+            if (prev.length) {
+                nav.push('← ' + prev[0].outerHTML);
+            }
+            
+            if (next.length) {
+                nav.push(next[0].outerHTML + ' →');
+            }
+
+            $('#bottom-nav').append(nav.join(' &amp; '));
+        });
+    </script>
 {% endblock %}
