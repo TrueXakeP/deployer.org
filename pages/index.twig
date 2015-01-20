@@ -23,13 +23,23 @@
     </div>
 {% endblock %}
 
-{% block content %}
-    <h1 id="introduction">Introduction</h1>
-    <p class="lead">
-        Deployer is a deployment tool written in PHP, it&#39;s simple and functional.
-        Deploy your code to all servers you want, it supports deploy via copy, or via VCS (like git), or via rsync.
-        Run your tasks on all your servers, or use our recipes of common tasks for Symfony, Laravel, Zend Framework and
-        Yii.
-    </p>
-    <p><a href="/docs">Getting Started</a> &rarr;</p>
+{% block section %}
+    <section>
+        <div class="container">
+            <h1 id="introduction">Introduction</h1>
+            <p class="lead">
+                Deployer is a deployment tool written in PHP, it&#39;s simple and functional.
+                Deploy your code to all servers you want, it supports deploy via copy, or via VCS (like git), or via rsync.
+                Run your tasks on all your servers, or use our recipes of common tasks for Symfony, Laravel, Zend Framework and
+                Yii.
+            </p>
+            <p><a href="/docs">Getting Started</a> &rarr;</p>
+        </div>
+    </section>
+    
+    <section class="getting-started">
+        <div class="container text-center">
+            <a class="btn btn-lg btn-primary" href="/docs">Getting Started</a>
+        </div>
+    </section>
 {% endblock %}
