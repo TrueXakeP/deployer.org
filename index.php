@@ -118,7 +118,7 @@ $app->before(function (Request $request) use ($app) {
         $payloadHash = hash_hmac($algo, $payload, $secret);
 
         if ($hubSignature === $payloadHash) {
-            $request->attributes->set('payload', $payload);
+            $request->attributes->set('payload', $data);
         } else {
             return new Response('', Response::HTTP_FORBIDDEN);
         }
