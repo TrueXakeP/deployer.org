@@ -146,6 +146,27 @@ $app->post('update/docs', function (Request $request) use ($app) {
     return new Response(join("\n", $output));
 });
 
+// Auto update Deployer on GitHub Webhook.
+$app->post('update/deployer', function (Request $request) use ($app) {
+    $event = $request->headers->get('X-Github-Event');
+    $payload = $request->attributes->get('payload');
+    $output = [];
+
+    if (
+        (
+            $event === 'pull_request' &&
+            $payload['action'] === 'closed' &&
+            $payload['pull_request']['merged']
+        ) || (
+            $event === 'push'
+        )
+    ) {
+        exec('cd ' . $app['deployer.path'] . ' && git pull https://github.com/deployphp/deployer.git master 2>&1', $output);
+    }
+
+    return new Response(join("\n", $output));
+});
+
 if ($app['cache']) {
     $app['http_cache']->run();
 } else {
