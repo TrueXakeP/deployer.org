@@ -157,6 +157,24 @@ section h4 {
     margin-top: 40px;
 }
 
+section .features:first-child {
+    margin-top: 20px;
+}
+
+section .features:not(:first-child) {
+    margin-top: 80px;
+}
+
+section .features h2 {
+    text-align: center;
+    margin-top: 10px;
+}
+
+section .feature-icon {
+    display: block;
+    margin: 0 auto;
+}
+
 section.getting-started {
     color: #ffffff;
     background: #4183c4;
