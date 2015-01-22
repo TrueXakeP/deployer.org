@@ -157,20 +157,20 @@ section h4 {
     margin-top: 40px;
 }
 
-section .features:first-child {
+section.features .row:first-child {
     margin-top: 20px;
 }
 
-section .features:not(:first-child) {
+section.features .row:not(:first-child) {
     margin-top: 80px;
 }
 
-section .features h2 {
+section.features h2 {
     text-align: center;
     margin-top: 10px;
 }
 
-section .feature-icon {
+section.features .feature-icon {
     display: block;
     margin: 0 auto;
 }
@@ -178,9 +178,9 @@ section .feature-icon {
 section.getting-started {
     color: #ffffff;
     background: #4183c4;
-    background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22160%22%20height%3D%2215%22%20viewBox%3D%220%200%20160%2015%22%20preserveAspectRatio%3D%22xMinYMin%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-opacity%3D%220.3%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M0%200.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-4.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-9.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%205.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%2010.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14%22%2F%3E%3C%2Fsvg%3E"),linear-gradient(to bottom, #4183c4 0, #2fccc0 100%);
-    padding-top: 120px;
-    padding-bottom: 120px;
+    background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22160%22%20height%3D%2215%22%20viewBox%3D%220%200%20160%2015%22%20preserveAspectRatio%3D%22xMinYMin%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-opacity%3D%220.3%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M0%200.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-4.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-9.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%205.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%2010.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14%22%2F%3E%3C%2Fsvg%3E"), linear-gradient(to bottom, #4183c4 0, #2fccc0 100%);
+    padding-top: 150px;
+    padding-bottom: 150px;
 }
 
 section.getting-started .btn-primary {
@@ -189,12 +189,20 @@ section.getting-started .btn-primary {
     background: transparent;
     color: white;
     border-color: white;
-} 
+}
 
 section.getting-started .btn-primary:hover {
     background: #ffffff;
     color: #37A8C2;
     transition: all .5s ease-in;
+}
+
+section.donate .table {
+    table-layout: fixed;
+}
+
+section.donate .table td {
+    text-align: center;
 }
 
 #bottom-nav {
