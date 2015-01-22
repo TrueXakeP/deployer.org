@@ -103,24 +103,45 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
 })
     ->assert('page', '[\w/-]+')
     ->value('page', 'getting-started');
-    
+
+// Check GitHub signature
+$app->before(function (Request $request) use ($app) {
+    if ($request->isMethod('POST') && preg_match('/^\/update/', $request->getRequestUri())) {
+        $secret = $app['github_secret'];
+        $hubSignature = $request->headers->get('X-Hub-Signature');
+
+        list($algo, $hash) = explode('=', $hubSignature, 2);
+
+        $payload = file_get_contents('php://input');
+        $data = json_decode($payload, true);
+
+        $payloadHash = hash_hmac($algo, $payload, $secret);
+
+        if ($hubSignature === $payloadHash) {
+            $request->attributes->set('payload', $payload);
+        } else {
+            return new Response('', Response::HTTP_FORBIDDEN);
+        }
+    }
+}, Silex\Application::EARLY_EVENT);
+
 // Auto update docs on GitHub Webhook.
 $app->post('update/docs', function (Request $request) use ($app) {
-    $secret = $app['github_secret'];
-    $hubSignature = $request->headers['X-Hub-Signature'];
- 
-    list($algo, $hash) = explode('=', $hubSignature, 2);
- 
-    $payload = file_get_contents('php://input');
-    $data    = json_decode($payload, true);
- 
-    $payloadHash = hash_hmac($algo, $payload, $secret);
- 
-    if ($hash !== $payloadHash) {
-        return new Response('', 500);
+    $event = $request->headers->get('X-Github-Event');
+    $payload = $request->attributes->get('payload');
+
+    if (
+        (
+            $event === 'pull_request' &&
+            $payload['action'] === 'closed' &&
+            $payload['pull_request']['merged']
+        ) || (
+            $event === 'push'
+        )
+    ) {
+        file_put_contents(__DIR__ . '/cache/webhook.log', $event . "\n", FILE_APPEND);
     }
 });
-
 
 if ($app['cache']) {
     $app['http_cache']->run();
