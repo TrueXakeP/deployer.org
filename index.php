@@ -117,10 +117,10 @@ $app->before(function (Request $request) use ($app) {
 
         $payloadHash = hash_hmac($algo, $payload, $secret);
 
-        if ($hubSignature === $payloadHash) {
+        if ($hash === $payloadHash) {
             $request->attributes->set('payload', $data);
         } else {
-            return new Response('', Response::HTTP_FORBIDDEN);
+            return new Response('Payload hash does not match hub signature.', Response::HTTP_FORBIDDEN);
         }
     }
 }, Silex\Application::EARLY_EVENT);
@@ -129,6 +129,7 @@ $app->before(function (Request $request) use ($app) {
 $app->post('update/docs', function (Request $request) use ($app) {
     $event = $request->headers->get('X-Github-Event');
     $payload = $request->attributes->get('payload');
+    $output = [];
 
     if (
         (
@@ -139,8 +140,10 @@ $app->post('update/docs', function (Request $request) use ($app) {
             $event === 'push'
         )
     ) {
-        file_put_contents(__DIR__ . '/cache/webhook.log', $event . "\n", FILE_APPEND);
+        exec('cd ' . $app['docs.path'] . ' && git pull https://github.com/deployphp/docs.git master 2>&1', $output);
     }
+
+    return new Response(join("\n", $output));
 });
 
 if ($app['cache']) {
