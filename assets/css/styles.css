@@ -93,6 +93,7 @@ header h1 a:hover {
     border-radius: 3px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    margin-bottom: 20px;
     height: 300px;
     overflow-y: hidden;
 }
