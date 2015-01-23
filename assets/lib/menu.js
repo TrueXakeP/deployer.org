@@ -7,23 +7,19 @@ $(function () {
         return check;
     };
 
-    var container = $('#st-container'),
-        button = $('#menu'),
+    var container = $('#sidebar-container'),
+        button = $('#nav-button'),
         eventType = mobileCheck() ? 'touchstart' : 'click';
 
+    $(document).click(eventType, function (event) {
+        if (!$(event.target).hasClass('sidebar-menu') && $('.sidebar-menu').has(event.target).length === 0) {
+            container.removeClass('sidebar-menu-open');
+        }
+    });
+    
     button.on(eventType, function (event) {
         event.stopPropagation();
         event.preventDefault();
-
-        container.addClass('st-effect-11');
-        setTimeout(function () {
-            container.addClass('st-menu-open');
-        }, 25);
-
-        $(document).one(eventType, function (event) {
-            if ($(this).parents('st-menu').length === 0) {
-                container.removeClass('st-menu-open');
-            }
-        });
+        container.addClass('sidebar-menu-open');
     });
 });
