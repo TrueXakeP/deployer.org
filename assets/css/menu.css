@@ -59,7 +59,7 @@ body,
     visibility: hidden;
     width: 300px;
     height: 100%;
-    background: #48a770;
+    background: #4183c4;
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
 }
@@ -96,10 +96,17 @@ body,
 .sidebar-menu h2 {
     margin: 0;
     padding: 1em;
-    color: rgba(0,0,0,0.4);
+    color: #ffffff;
     text-shadow: 0 0 1px rgba(0,0,0,0.1);
+    font-family: 'Lobster', cursive;
     font-weight: 300;
     font-size: 2em;
+}
+
+.sidebar-menu h2 a,
+.sidebar-menu h2 a:hover {
+    color: #ffffff;
+    text-decoration: none;
 }
 
 .sidebar-menu ul li a {

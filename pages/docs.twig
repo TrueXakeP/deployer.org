@@ -2,17 +2,17 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-2 visible-lg-block">
+        <div class="col-md-2 visible-lg-block docs-nav">
             {{ menu|raw }}
             <small>
                 Found a typo? Is something wrong in this documentation?<br>
-                Just <a href="https://github.com/deployphp/docs">fork and edit</a> it!
+                Just <a href="https://github.com/deployphp/docs/edit/master/{{ page }}.md">fork and edit</a> it!
             </small>
         </div>
 
         <div class="col-md-10">
             {{ content|raw }}
-            <div id="bottom-nav"></div>
+            <div class="docs-bottom-nav"></div>
         </div>
     </div>
 {% endblock %}
@@ -20,20 +20,23 @@
 {% block script %}
     <script>
         $(function () {
-            var current = $('.nav').find('a[href^="' + location.pathname + '"]').eq(0).parents('li'),
+            var nav = $('.docs-nav > ul'),
+                current = nav.find('a[href^="' + location.pathname + '"]').eq(0).parents('li'),
                 next = current.next().find('a'),
                 prev = current.prev().find('a'),
-                nav = [];
+                links = [];
 
             if (prev.length) {
-                nav.push('← ' + prev[0].outerHTML);
+                links.push('← ' + prev[0].outerHTML);
             }
             
             if (next.length) {
-                nav.push(next[0].outerHTML + ' →');
+                links.push(next[0].outerHTML + ' →');
             }
 
-            $('#bottom-nav').append(nav.join(' &amp; '));
+            $('.docs-bottom-nav').append(links.join(' &amp; '));
+
+            nav.addClass('nav nav-stacked');
         });
     </script>
 {% endblock %}

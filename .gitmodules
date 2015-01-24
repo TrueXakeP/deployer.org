@@ -1,6 +1,3 @@
-[submodule "deployer"]
-	path = deployer
-	url = git@github.com:deployphp/deployer.git
 [submodule "documentation"]
 	path = documentation
 	url = git@github.com:deployphp/docs.git

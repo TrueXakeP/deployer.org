@@ -4,6 +4,19 @@ body {
     background: #444444;
 }
 
+a {
+    color: #C72525;
+}
+
+a:hover {
+    color: #91170a;
+}
+
+code {
+    color: #272822;
+    background: #f8f8f2;
+}
+
 header {
     position: relative;
     color: #ffffff;
@@ -216,10 +229,10 @@ section.donate .table td {
     text-align: center;
 }
 
-#bottom-nav {
+.docs-bottom-nav {
     text-align: center;
-    font-size: 16px;
-    margin-top: 10px;
+    font-size: 18px;
+    margin-top: 20px;
 }
 
 /* Extra Small Devices, Phones */

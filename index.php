@@ -24,30 +24,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/pages',
 ));
 
-// Set paths for Docs and for Deployer local repositories
+// Set paths for Docs local repository.
 $app['docs.path'] = __DIR__ . '/documentation';
-$app['deployer.path'] = __DIR__ . '/deployer';
-
-// Show index.twig page on root request. 
-// Cache rendered response with validate file modify time.
-$app->get('/', function (Request $request) use ($app) {
-    $response = new Response();
-    $response->setPublic();
-
-    $lastModified = new DateTime();
-    $lastModified->setTimestamp(filemtime($app['twig.path'] . '/index.twig'));
-    $response->setLastModified($lastModified);
-
-    if ($response->isNotModified($request)) {
-        return $response;
-    }
-
-    $response->headers->set('Content-Type', 'text/html');
-    $response->setCharset('UTF-8');
-    $response->setContent(render('index.twig'));
-
-    return $response;
-});
 
 // Get docs pages from markdown source, manually parse `.md` links.
 // Cache rendered response with validate file modify time.
@@ -61,10 +39,7 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    $lastModified = new DateTime();
-    $lastModified->setTimestamp($file->getMTime());
-    $response->setLastModified($lastModified);
-
+    $response->setLastModified(new DateTime('@' . $file->getMTime()));
     if ($response->isNotModified($request)) {
         return $response;
     }
@@ -72,28 +47,35 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
 
-    $parser = new Parsedown();
+    $parse = function ($content) use ($request) {
+        static $parsedown = null;
+
+        if (null === $parsedown) {
+            $parsedown = new Parsedown();
+        }
+
+        // Replace links urls.
+        $content = preg_replace('/\((.*?)\.md\)/', '(' . $request->getBaseUrl() . '/docs/$1)', $content);
+
+        return $parsedown->text($content);
+    };
 
     $content = file_get_contents($file->getPathname());
-    
+
     // Get title from first header.
     if (preg_match('/#\s*(.*)/u', $content, $matches)) {
         $title = $matches[1];
     } else {
         $title = '';
     }
-    $content = preg_replace('/\((.*?)\.md\)/', '(' . $request->getBaseUrl() . '/docs/$1)', $content);
-    $content = $parser->text($content);
+
+    $content = $parse($content);
 
     // Get docs navigation from README.md
-    $menu = file_get_contents($app['docs.path'] . '/README.md');
-    $menu = preg_replace('/\((.*?)\.md\)/', '(' . $request->getBaseUrl() . '/docs/$1)', $menu);
-    $menu = $parser->text($menu);
-    
-    // Put little style on nav.
-    $menu = str_replace('<ul>', '<ul id="nav" class="nav nav-stacked">', $menu);
+    $menu = $parse(file_get_contents($app['docs.path'] . '/README.md'));
 
     $response->setContent(render('docs.twig', [
+        'page' => $page,
         'title' => $title,
         'menu' => $menu,
         'content' => $content,
@@ -103,6 +85,7 @@ $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
 })
     ->assert('page', '[\w/-]+')
     ->value('page', 'getting-started');
+
 
 // Check GitHub signature
 $app->before(function (Request $request) use ($app) {
@@ -143,29 +126,38 @@ $app->post('update/docs', function (Request $request) use ($app) {
         exec('cd ' . $app['docs.path'] . ' && git pull https://github.com/deployphp/docs.git master 2>&1', $output);
     }
 
-    return new Response(join("\n", $output));
+    return new Response(join("\n", $output), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
 });
 
-// Auto update Deployer on GitHub Webhook.
-$app->post('update/deployer', function (Request $request) use ($app) {
-    $event = $request->headers->get('X-Github-Event');
-    $payload = $request->attributes->get('payload');
-    $output = [];
+// Show pages. This route must be last.
+// Cache rendered response with validate file modify time.
+$app->get('/{page}', function (Request $request, $page) use ($app) {
+    $response = new Response();
+    $response->setPublic();
 
-    if (
-        (
-            $event === 'pull_request' &&
-            $payload['action'] === 'closed' &&
-            $payload['pull_request']['merged']
-        ) || (
-            $event === 'push'
-        )
-    ) {
-        exec('cd ' . $app['deployer.path'] . ' && git pull https://github.com/deployphp/deployer.git master 2>&1', $output);
+    $file = new SplFileInfo($app['twig.path'] . '/' . $page . '.twig');
+
+    if (!$file->isReadable()) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    return new Response(join("\n", $output));
-});
+    $response->setLastModified(new DateTime('@' . $file->getMTime()));
+    if ($response->isNotModified($request)) {
+        return $response;
+    }
+
+    $response->headers->set('Content-Type', 'text/html');
+    $response->setCharset('UTF-8');
+    $response->setContent(render($page . '.twig'));
+
+    return $response;
+})
+    ->value('page', 'index');
+
+
+/****************************\
+|     Start application      |
+\****************************/
 
 if ($app['cache']) {
     $app['http_cache']->run();
@@ -175,7 +167,7 @@ if ($app['cache']) {
 
 /**
  * Render file with twig.
- * 
+ *
  * @param string $file
  * @param array $params
  * @return string
