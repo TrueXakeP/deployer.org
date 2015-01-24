@@ -11,7 +11,7 @@ $(function () {
         button = $('#nav-button'),
         eventType = mobileCheck() ? 'touchstart' : 'click';
 
-    $(document).click(eventType, function (event) {
+    $(document).on(eventType, function (event) {
         if (!$(event.target).hasClass('sidebar-menu') && $('.sidebar-menu').has(event.target).length === 0) {
             container.removeClass('sidebar-menu-open');
         }
