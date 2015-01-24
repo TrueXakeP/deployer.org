@@ -265,5 +265,6 @@ section.donate .table td {
 
 footer {
     margin-top: 50px;
-    margin-bottom: 20px;
+    padding-bottom: 20px;
+    background: #F3EFE0;
 }

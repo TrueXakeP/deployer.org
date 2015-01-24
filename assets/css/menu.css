@@ -1,13 +1,14 @@
-html,
-body,
-.sidebar-container,
-.sidebar-pusher,
-.sidebar-content {
-    height: 100%;
+body.sidebar-open .sidebar-container,
+body.sidebar-open .sidebar-pusher,
+body.sidebar-open .sidebar-content {
+    height: 100vh;
+}
+
+body.sidebar-open .sidebar-content {
+    overflow-y: scroll;
 }
 
 .sidebar-content {
-    overflow-y: scroll;
     background: #f3efe0;
 }
 

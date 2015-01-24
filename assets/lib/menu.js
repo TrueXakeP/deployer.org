@@ -9,11 +9,15 @@ $(function () {
 
     var container = $('#sidebar-container'),
         button = $('#nav-button'),
-        eventType = mobileCheck() ? 'touchstart' : 'click';
+        eventType = mobileCheck() ? 'touchstart' : 'click',
+        body = $('body');
 
     $(document).on(eventType, function (event) {
         if (!$(event.target).hasClass('sidebar-menu') && $('.sidebar-menu').has(event.target).length === 0) {
             container.removeClass('sidebar-menu-open');
+            setTimeout(function () {
+                body.removeClass('sidebar-open');
+            }, 600);
         }
     });
     
@@ -21,5 +25,6 @@ $(function () {
         event.stopPropagation();
         event.preventDefault();
         container.addClass('sidebar-menu-open');
+        body.addClass('sidebar-open');
     });
 });
