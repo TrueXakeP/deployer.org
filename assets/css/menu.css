@@ -58,7 +58,7 @@ body.sidebar-open .sidebar-content {
     left: 0;
     z-index: 100;
     visibility: hidden;
-    width: 300px;
+    width: 250px;
     height: 100%;
     background: #4183c4;
     -webkit-transition: all 0.5s;
@@ -170,5 +170,5 @@ body.sidebar-open .sidebar-content {
 /* Fallback example for browsers that don't support 3D transforms (and no JS fallback) */
 .no-csstransforms3d .sidebar-pusher,
 .no-js .sidebar-pusher {
-    padding-left: 300px;
+    padding-left: 250px;
 }
