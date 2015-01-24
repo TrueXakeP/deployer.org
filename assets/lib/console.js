@@ -7,7 +7,7 @@
 $(function () {
     var code = $('.code');
     var console = $('.console');
-    var input = $('#input').focus();
+    var input = $('.code input').focus();
     var form = $('#console');
     var scroll = function () {
         code.scrollTop(code[0].scrollHeight);
