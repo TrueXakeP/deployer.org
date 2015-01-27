@@ -10,22 +10,22 @@ use Symfony\Component\HttpFoundation\Response;
 require __DIR__ . '/vendor/autoload.php';
 
 // Init app with parameters from config.ini
-
 $app = new Silex\Application(parse_ini_file(is_readable('config.ini') ? 'config.ini' : 'config.ini.dist'));
 
 // Register HTTP Cache and Twig
-
 $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
     'http_cache.cache_dir' => __DIR__ . '/cache/',
     'http_cache.esi' => null,
 ));
-
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/pages',
 ));
 
-// Set paths for Docs local repository.
+// Set path for docs local repository.
 $app['docs.path'] = __DIR__ . '/documentation';
+
+// Set path for releases.
+$app['releases.path'] = __DIR__ . '/releases';
 
 // Get docs pages from markdown source, manually parse `.md` links.
 // Cache rendered response with validate file modify time.
@@ -108,8 +108,37 @@ $app->before(function (Request $request) use ($app) {
     }
 }, Silex\Application::EARLY_EVENT);
 
-// Auto update docs on GitHub Webhook.
+
+// Auto update docs on GitHub WebHook.
 $app->post('update/docs', function (Request $request) use ($app) {
+    $event = $request->headers->get('X-Github-Event');
+    $payload = $request->attributes->get('payload');
+    $output = '';
+
+    if (
+        (
+            $event === 'pull_request' &&
+            $payload['action'] === 'closed' &&
+            $payload['pull_request']['merged']
+        ) || (
+            $event === 'push'
+        )
+    ) {
+        $run = function ($command) use ($app) {
+            $process = new \Symfony\Component\Process\Process('cd ' . $app['docs.path'] . ' && ' . $command);
+            $process->mustRun();
+            return $process->getOutput();
+        };
+
+        $output = $run('git pull https://github.com/deployphp/docs.git master 2>&1');
+    }
+
+    return new Response($output, Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+});
+
+
+// Auto update deployer.phar on GitHub WebHook.
+$app->post('update/deployer', function (Request $request) use ($app) {
     $event = $request->headers->get('X-Github-Event');
     $payload = $request->attributes->get('payload');
     $output = [];
@@ -123,11 +152,140 @@ $app->post('update/docs', function (Request $request) use ($app) {
             $event === 'push'
         )
     ) {
-        exec('cd ' . $app['docs.path'] . ' && git pull https://github.com/deployphp/docs.git master 2>&1', $output);
+        ignore_user_abort(true);
+        set_time_limit(0);
+
+        $releases = $app['releases.path'];
+
+        if (!is_writable($releases)) {
+            return new Response("Release path does not writable.", Response::HTTP_I_AM_A_TEAPOT);
+        }
+
+        $run = function ($command) use ($releases, &$output) {
+            $process = new \Symfony\Component\Process\Process("cd $releases && $command");
+            $process->mustRun();
+            return $output[] = $process->getOutput();
+        };
+
+        // Clear to be sure. 
+        $run("rm -rf $releases/deployer");
+
+        // Clone deployer to deployer dir in releases path.
+        $run('git clone https://github.com/deployphp/deployer.git deployer 2>&1');
+
+        // Get list of tags.
+        $tags = $run('cd deployer && git tag');
+
+        $manifest = [];
+
+        // Read manifest if it is exist.
+        if (is_readable("$releases/manifest.json")) {
+            $manifest = json_decode(file_get_contents("$releases/manifest.json"), true);
+        }
+
+        // For all tags.
+        foreach (explode("\n", $tags) as $tag) {
+            if (empty($tag)) {
+                continue;
+            }
+
+            // Skip if tag already released.
+            if (is_dir($dir = "$releases/$tag")) {
+                continue;
+            }
+
+            $output[] = "Building Phar for $tag tag.\n";
+
+            try {
+                // Checkout tag, update vendors, run build tool.
+                $run("cd deployer && git checkout tags/$tag --force 2>&1");
+                $run('cd deployer && composer update --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
+                $run('cd deployer && php ' . (is_file("$releases/deployer/bin/build") ? 'bin/build' : 'build'));
+
+                // Create new dir and copy phar there.
+                mkdir($dir);
+                copy("$releases/deployer/deployer.phar", "$dir/deployer.phar");
+
+                // Generate sha1 sum and put it to manifest.json
+                $newPharManifest = [
+                    'name' => 'deployer.phar',
+                    'sha1' => sha1_file("$dir/deployer.phar"),
+                    'url' => "http://deployer.org/releases/$tag/deployer.phar",
+                    'version' => $version = str_replace('v', '', $tag), // Place version from tag without leading "v".
+                ];
+
+                // Check if this version already in manifest.json.
+                $alreadyExistVersion = null;
+                foreach ($manifest as $i => $old) {
+                    if ($old['version'] === $version) {
+                        $alreadyExistVersion = $i;
+                    }
+                }
+
+                // Save or update.
+                if (null === $alreadyExistVersion) {
+                    $manifest[] = $newPharManifest;
+                } else {
+                    $manifest[$alreadyExistVersion] = $newPharManifest;
+                }
+            } catch (Exception $exception) {
+                $output[] = "Exception `" . get_class($exception) . "` caught.\n";
+                $output[] = $exception->getMessage();
+
+                // Remove this tag dir.
+                $run("rm -rf $releases/$tag");
+            }
+        }
+
+        // Write manifest to manifest.json.
+        file_put_contents("$releases/manifest.json", json_encode($manifest, JSON_PRETTY_PRINT));
+
+        // Remove deployer dir.
+        $run("rm -rf $releases/deployer");
     }
 
     return new Response(join("\n", $output), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
 });
+
+
+// Return manifest.
+$app->get('/manifest.json', function (Request $request) use ($app) {
+    $response = new Response();
+    $response->setPublic();
+
+    $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
+
+    if (!$file->isReadable()) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+
+    $response->setLastModified(new DateTime('@' . $file->getMTime()));
+    if ($response->isNotModified($request)) {
+        return $response;
+    }
+
+    $response->headers->set('Content-Type', 'application/json');
+    $response->setCharset('UTF-8');
+    $response->setContent(file_get_contents($file->getPathname()));
+
+    return $response;
+});
+
+
+// Return latest release phar.
+$app->get('/deployer.phar', function (Request $request) use ($app) {
+    $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
+
+    if (!$file->isReadable()) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+    
+    $manifest  = json_decode(file_get_contents($file->getPathname()), true);
+    $latest = array_pop($manifest);
+    
+    return new \Symfony\Component\HttpFoundation\RedirectResponse("/releases/v$latest[version]/deployer.phar");
+});
+
 
 // Show pages. This route must be last.
 // Cache rendered response with validate file modify time.
@@ -155,15 +313,23 @@ $app->get('/{page}', function (Request $request, $page) use ($app) {
     ->value('page', 'index');
 
 
-/****************************\
-|     Start application      |
-\****************************/
+
+#########################
+#   Start application   #
+#########################
+
 
 if ($app['cache']) {
     $app['http_cache']->run();
 } else {
     $app->run();
 }
+
+
+#########################
+#   Helper functions    #
+#########################
+
 
 /**
  * Render file with twig.
@@ -174,6 +340,6 @@ if ($app['cache']) {
  */
 function render($file, $params = [])
 {
-    global $app;
+    global $app; // Yes, I know that =)
     return $app['twig']->render($file, $params);
 }

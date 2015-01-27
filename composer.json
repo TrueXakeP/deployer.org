@@ -2,6 +2,7 @@
     "require": {
         "silex/silex": "~1.2",
         "twig/twig": ">=1.8,<2.0-dev",
-        "erusev/parsedown": "~1.4"
+        "erusev/parsedown": "~1.4",
+        "symfony/process": "~2.6"
     }
 }
