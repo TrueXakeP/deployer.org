@@ -1,0 +1,121 @@
+<?php
+/* (c) Anton Medvedev <anton@elfet.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+if (!$app instanceof Silex\Application) {
+    exit(1);
+}
+
+$console = new \Symfony\Component\Console\Application('deployer.org');
+
+$updateDeployerCommand = new \Symfony\Component\Console\Command\Command('update-deployer');
+$updateDeployerCommand->setCode(function ($input, $output) use ($app) {
+    $releases = $app['releases.path'];
+
+    $run = function ($command) use ($releases, $output) {
+        $process = new \Symfony\Component\Process\Process("cd $releases && $command");
+        $process->mustRun();
+        $out = $process->getOutput();
+        $output->write($out);
+        return $out;
+    };
+
+    // Clear to be sure. 
+    $run("rm -rf $releases/deployer");
+
+    // Clone deployer to deployer dir in releases path.
+    $run('git clone https://github.com/deployphp/deployer.git deployer 2>&1');
+
+    // Get list of tags.
+    $tags = $run('cd deployer && git tag');
+
+    $manifest = [];
+
+    // Read manifest if it is exist.
+    if (is_readable("$releases/manifest.json")) {
+        $manifest = json_decode(file_get_contents("$releases/manifest.json"), true);
+    }
+
+    // For all tags.
+    foreach (explode("\n", $tags) as $tag) {
+        if (empty($tag)) {
+            continue;
+        }
+
+        // Skip if tag already released.
+        if (is_dir($dir = "$releases/$tag")) {
+            continue;
+        }
+
+        $output->write("Building Phar for $tag tag.\n");
+
+        try {
+            // Checkout tag, update vendors, run build tool.
+            $run("cd deployer && git checkout tags/$tag --force 2>&1");
+            $run('cd deployer && composer update --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
+            $run('cd deployer && php ' . (is_file("$releases/deployer/bin/build") ? 'bin/build' : 'build'));
+
+            // Create new dir and copy phar there.
+            mkdir($dir);
+            copy("$releases/deployer/deployer.phar", "$dir/deployer.phar");
+
+            // Generate sha1 sum and put it to manifest.json
+            $newPharManifest = [
+                'name' => 'deployer.phar',
+                'sha1' => sha1_file("$dir/deployer.phar"),
+                'url' => "http://deployer.org/releases/$tag/deployer.phar",
+                'version' => $version = str_replace('v', '', $tag), // Place version from tag without leading "v".
+            ];
+
+            // Check if this version already in manifest.json.
+            $alreadyExistVersion = null;
+            foreach ($manifest as $i => $old) {
+                if ($old['version'] === $version) {
+                    $alreadyExistVersion = $i;
+                }
+            }
+
+            // Save or update.
+            if (null === $alreadyExistVersion) {
+                $manifest[] = $newPharManifest;
+            } else {
+                $manifest[$alreadyExistVersion] = $newPharManifest;
+            }
+        } catch (Exception $exception) {
+            $output->write("Exception `" . get_class($exception) . "` caught.\n");
+            $output->write($exception->getMessage());
+
+            // Remove this tag dir.
+            $run("rm -rf $releases/$tag");
+        }
+    }
+
+    // Write manifest to manifest.json.
+    file_put_contents("$releases/manifest.json", json_encode($manifest, JSON_PRETTY_PRINT));
+
+    // Remove deployer dir.
+    $run("rm -rf $releases/deployer");
+});
+$console->add($updateDeployerCommand);
+
+$updateDocumentationCommand = new \Symfony\Component\Console\Command\Command('update-documentation');
+$updateDocumentationCommand->setCode(function ($input, $output) use ($app) {
+    $run = function ($command) use ($app) {
+        $process = new \Symfony\Component\Process\Process('cd ' . $app['docs.path'] . ' && ' . $command);
+        $process->mustRun();
+        return $process->getOutput();
+    };
+
+    if (is_file($app['docs.path'] . '/README.md')) {
+        $output->write($run('git reset --hard origin/master'));
+        $output->write($run('git pull https://github.com/deployphp/docs.git master 2>&1'));
+    } else {
+        $output->write($run('git clone --depth 1 https://github.com/deployphp/docs.git . 2>&1'));
+    }
+});
+$console->add($updateDocumentationCommand);
+
+$console->run();

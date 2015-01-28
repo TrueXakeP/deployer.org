@@ -124,8 +124,8 @@ $app->post('update/docs', function (Request $request) use ($app) {
         )
     ) {
 
-        updateDocumentation();
-        
+        run('update-documentation');
+
         return new Response('Documentation updated successful.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
     }
 
@@ -138,21 +138,16 @@ $app->post('update/deployer', function (Request $request) use ($app) {
     $event = $request->headers->get('X-Github-Event');
     $payload = $request->attributes->get('payload');
 
-    if (
-        (
-            $event === 'create' &&
-            $payload['ref_type'] === 'tag'
-        )
-    ) {
+    if ($event === 'create' && $payload['ref_type'] === 'tag') {
+
         if (!is_writable($app['releases.path'])) {
             return new Response("Release path does not writable.", Response::HTTP_I_AM_A_TEAPOT);
         }
-        
-        $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' update-deployer > ' . __DIR__ . '/logs/update-deployer.log 2>&1 &');
-        $process->disableOutput();
-        $process->run();
+
+        run('update-deployer');
 
         return new Response('Deployer updated successful.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+        
     }
 
     return new Response('Deployer was not updated.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
@@ -190,10 +185,10 @@ $app->get('/deployer.phar', function (Request $request) use ($app) {
     if (!$file->isReadable()) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
-    
-    $manifest  = json_decode(file_get_contents($file->getPathname()), true);
+
+    $manifest = json_decode(file_get_contents($file->getPathname()), true);
     $latest = array_pop($manifest);
-    
+
     return new \Symfony\Component\HttpFoundation\RedirectResponse("/releases/v$latest[version]/deployer.phar");
 });
 
@@ -224,24 +219,12 @@ $app->get('/{page}', function (Request $request, $page) use ($app) {
     ->value('page', 'index');
 
 
-
 #########################
 #   Start application   #
 #########################
 
 if (php_sapi_name() == "cli") {
-    $console = new \Symfony\Component\Console\Application('Deployer Site');
-    $updateDeployerCommand = new \Symfony\Component\Console\Command\Command('update-deployer');
-    $updateDeployerCommand->setCode(function ($input, $output) {
-        $output->write(updateDeployer());
-    });
-    $updateDocumentationCommand = new \Symfony\Component\Console\Command\Command('update-documentation');
-    $updateDocumentationCommand->setCode(function ($input, $output) {
-        $output->write(updateDocumentation());
-    });
-    $console->add($updateDeployerCommand);
-    $console->add($updateDocumentationCommand);
-    $console->run();
+    require __DIR__ . '/cli.php';
 } else {
     if ($app['cache']) {
         $app['http_cache']->run();
@@ -270,122 +253,13 @@ function render($file, $params = [])
 }
 
 /**
- * @return array
+ * Runs CLI command.
+ *
+ * @param string $command Command name.
  */
-function updateDocumentation()
+function run($command)
 {
-    global $app;
-    
-    $output = [];
-    
-    $run = function ($command) use ($app) {
-        $process = new \Symfony\Component\Process\Process('cd ' . $app['docs.path'] . ' && ' . $command);
-        $process->mustRun();
-        return $process->getOutput();
-    };
-
-    if (is_file($app['docs.path'] . '/README.md')) {
-        $output[] = $run('git reset --hard origin/master');
-        $output[] = $run('git pull https://github.com/deployphp/docs.git master 2>&1');
-    } else {
-        $output[] = $run('git clone --depth 1 https://github.com/deployphp/docs.git . 2>&1');
-    }
-
-    return $output;
-}
-
-/**
- * @return array
- */
-function updateDeployer()
-{
-    global $app;
-    
-    $output = [];
-
-    $releases = $app['releases.path'];
-
-    $run = function ($command) use ($releases, &$output) {
-        $process = new \Symfony\Component\Process\Process("cd $releases && $command");
-        $process->mustRun();
-        return $output[] = $process->getOutput();
-    };
-
-    // Clear to be sure. 
-    $run("rm -rf $releases/deployer");
-
-    // Clone deployer to deployer dir in releases path.
-    $run('git clone https://github.com/deployphp/deployer.git deployer 2>&1');
-
-    // Get list of tags.
-    $tags = $run('cd deployer && git tag');
-
-    $manifest = [];
-
-    // Read manifest if it is exist.
-    if (is_readable("$releases/manifest.json")) {
-        $manifest = json_decode(file_get_contents("$releases/manifest.json"), true);
-    }
-
-    // For all tags.
-    foreach (explode("\n", $tags) as $tag) {
-        if (empty($tag)) {
-            continue;
-        }
-
-        // Skip if tag already released.
-        if (is_dir($dir = "$releases/$tag")) {
-            continue;
-        }
-
-        $output[] = "Building Phar for $tag tag.\n";
-
-        try {
-            // Checkout tag, update vendors, run build tool.
-            $run("cd deployer && git checkout tags/$tag --force 2>&1");
-            $run('cd deployer && composer update --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
-            $run('cd deployer && php ' . (is_file("$releases/deployer/bin/build") ? 'bin/build' : 'build'));
-
-            // Create new dir and copy phar there.
-            mkdir($dir);
-            copy("$releases/deployer/deployer.phar", "$dir/deployer.phar");
-
-            // Generate sha1 sum and put it to manifest.json
-            $newPharManifest = [
-                'name' => 'deployer.phar',
-                'sha1' => sha1_file("$dir/deployer.phar"),
-                'url' => "http://deployer.org/releases/$tag/deployer.phar",
-                'version' => $version = str_replace('v', '', $tag), // Place version from tag without leading "v".
-            ];
-
-            // Check if this version already in manifest.json.
-            $alreadyExistVersion = null;
-            foreach ($manifest as $i => $old) {
-                if ($old['version'] === $version) {
-                    $alreadyExistVersion = $i;
-                }
-            }
-
-            // Save or update.
-            if (null === $alreadyExistVersion) {
-                $manifest[] = $newPharManifest;
-            } else {
-                $manifest[$alreadyExistVersion] = $newPharManifest;
-            }
-        } catch (Exception $exception) {
-            $output[] = "Exception `" . get_class($exception) . "` caught.\n";
-            $output[] = $exception->getMessage();
-
-            // Remove this tag dir.
-            $run("rm -rf $releases/$tag");
-        }
-    }
-
-    // Write manifest to manifest.json.
-    file_put_contents("$releases/manifest.json", json_encode($manifest, JSON_PRETTY_PRINT));
-
-    // Remove deployer dir.
-    $run("rm -rf $releases/deployer");
-    
-    return $output;
+    $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' ' . $command . ' > ' . __DIR__ . '/logs/' . $command . '.log 2>&1 &');
+    $process->disableOutput();
+    $process->run();
 }
