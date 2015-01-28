@@ -27,6 +27,12 @@ $app['docs.path'] = __DIR__ . '/documentation';
 // Set path for releases.
 $app['releases.path'] = __DIR__ . '/releases';
 
+// Set cli file.
+$app['cli'] = __FILE__;
+
+// Set schedule file.
+$app['schedule'] = __DIR__ . '/logs/schedule.log';
+
 // Get docs pages from markdown source, manually parse `.md` links.
 // Cache rendered response with validate file modify time.
 $app->get('/docs/{page}', function ($page, Request $request) use ($app) {
@@ -124,9 +130,10 @@ $app->post('update/docs', function (Request $request) use ($app) {
         )
     ) {
 
-        run('update-documentation');
+        $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' update-documentation');
+        $process->run();
 
-        return new Response('Documentation updated successful.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+        return new Response("Documentation updated successful.\n\n" . $process->getOutput(), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
     }
 
     return new Response('Documentation was not updated.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
@@ -144,7 +151,7 @@ $app->post('update/deployer', function (Request $request) use ($app) {
             return new Response("Release path does not writable.", Response::HTTP_I_AM_A_TEAPOT);
         }
 
-        run('update-deployer');
+        file_put_contents($app['schedule'], "update-deployer\n", FILE_APPEND);
 
         return new Response('Deployer updated successful.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
         
@@ -250,16 +257,4 @@ function render($file, $params = [])
 {
     global $app; // Yes, I know that =)
     return $app['twig']->render($file, $params);
-}
-
-/**
- * Runs CLI command.
- *
- * @param string $command Command name.
- */
-function run($command)
-{
-    $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' ' . $command);
-    $process->run();
-    file_put_contents(__DIR__ . '/logs/' . $command . '.log', $process->getOutput());
 }

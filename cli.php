@@ -118,4 +118,30 @@ $updateDocumentationCommand->setCode(function ($input, $output) use ($app) {
 });
 $console->add($updateDocumentationCommand);
 
+$scheduleCommand = new \Symfony\Component\Console\Command\Command('schedule');
+$scheduleCommand->setCode(function ($input, $output) use ($app) {
+    $commands = explode("\n", file_get_contents($app['schedule']));
+
+    while (count($commands) > 0) {
+        $command = array_shift($commands);
+            
+        if (in_array($command, ['update-deployer', 'update-documentation'], true)) {
+            
+            // Remove same commands.
+            $commands = array_filter($commands, function ($i) use ($command) {
+                return $i !== $command;
+            });
+            
+            $output->write("Running command $command.\n");
+            
+            $process = new \Symfony\Component\Process\Process("php $app[cli] $command");
+            $process->run();
+            file_put_contents(__DIR__ . '/logs/' . $command . '.log', $process->getOutput());
+        }
+    }
+    
+    file_put_contents($app['schedule'], implode("\n", $commands));
+});
+$console->add($scheduleCommand);
+
 $console->run();
