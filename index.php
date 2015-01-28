@@ -259,7 +259,7 @@ function render($file, $params = [])
  */
 function run($command)
 {
-    $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' ' . $command . ' > ' . __DIR__ . '/logs/' . $command . '.log 2>&1 &');
-    $process->disableOutput();
+    $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' ' . $command);
     $process->run();
+    file_put_contents(__DIR__ . '/logs/' . $command . '.log', $process->getOutput());
 }
