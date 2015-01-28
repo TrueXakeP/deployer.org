@@ -2,5 +2,6 @@ vendor/
 cache/
 releases/
 .idea/
+logs/
 .htaccess
 config.ini
