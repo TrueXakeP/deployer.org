@@ -134,11 +134,11 @@ $app->post('update/docs', function (Request $request) use ($app) {
 
 
 // Auto update deployer.phar on GitHub WebHook.
-$app->get('update/deployer', function (Request $request) use ($app) {
+$app->post('update/deployer', function (Request $request) use ($app) {
     $event = $request->headers->get('X-Github-Event');
     $payload = $request->attributes->get('payload');
 
-    if (1 ||
+    if (
         (
             $event === 'create' &&
             $payload['ref_type'] === 'tag'
