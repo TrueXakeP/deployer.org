@@ -133,7 +133,7 @@ $app->post('update/docs', function (Request $request) use ($app) {
         $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' update-documentation');
         $process->run();
 
-        return new Response("Documentation updated successful.\n\n" . $process->getOutput(), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+        return new Response("Documentation updated successfully.\n\n" . $process->getOutput(), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
     }
 
     return new Response('Documentation was not updated.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
@@ -147,17 +147,12 @@ $app->post('update/deployer', function (Request $request) use ($app) {
 
     if ($event === 'create' && $payload['ref_type'] === 'tag') {
 
-        if (!is_writable($app['releases.path'])) {
-            return new Response("Release path does not writable.", Response::HTTP_I_AM_A_TEAPOT);
-        }
-
         file_put_contents($app['schedule'], "update-deployer\n", FILE_APPEND);
 
-        return new Response('Deployer updated successful.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
-        
+        return new Response('Schedule task to update deployer created.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
     }
 
-    return new Response('Deployer was not updated.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+    return new Response('', Response::HTTP_FORBIDDEN, ['Content-Type' => 'text/plain']);
 });
 
 
