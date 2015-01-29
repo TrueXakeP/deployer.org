@@ -55,7 +55,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
         try {
             // Checkout tag, update vendors, run build tool.
             $run("cd deployer && git checkout tags/$tag --force 2>&1");
-            $run('cd deployer && composer update --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
+            $run('cd deployer && /usr/local/bin/composer update --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
             $run('cd deployer && php ' . (is_file("$releases/deployer/bin/build") ? 'bin/build' : 'build'));
 
             // Create new dir and copy phar there.
