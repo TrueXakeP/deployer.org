@@ -181,7 +181,7 @@ $app->get('/manifest.json', function (Request $request) use ($app) {
 
 
 // Return latest release phar.
-$app->get('/deployer{stable}.phar', function (Request $request, $stable) use ($app) {
+$app->get('/{stable}deployer.phar', function (Request $request, $stable) use ($app) {
     $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
 
     if (!$file->isReadable()) {
@@ -209,7 +209,7 @@ $app->get('/deployer{stable}.phar', function (Request $request, $stable) use ($a
     
     return new \Symfony\Component\HttpFoundation\RedirectResponse("/releases/v$latest/deployer.phar");
 })
-    ->assert('stable', '(\-beta)?')
+    ->assert('stable', '(beta\/)?')
     ->value('stable', '');
 
 
