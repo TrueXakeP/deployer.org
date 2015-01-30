@@ -181,7 +181,7 @@ $app->get('/manifest.json', function (Request $request) use ($app) {
 
 
 // Return latest release phar.
-$app->get('/deployer.phar', function (Request $request) use ($app) {
+$app->get('/deployer{stable}.phar', function (Request $request, $stable) use ($app) {
     $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
 
     if (!$file->isReadable()) {
@@ -189,10 +189,28 @@ $app->get('/deployer.phar', function (Request $request) use ($app) {
     }
 
     $manifest = json_decode(file_get_contents($file->getPathname()), true);
-    $latest = array_pop($manifest);
+    
+    // Find latest stable version or unstable if $stable variable not equals empty string. 
 
-    return new \Symfony\Component\HttpFoundation\RedirectResponse("/releases/v$latest[version]/deployer.phar");
-});
+    $latest  = new \Herrera\Version\Version();
+    $builder = new \Herrera\Version\Builder();
+    
+    foreach ($manifest as $row) {
+        $version = $builder->importString($row['version'])->getVersion();
+        
+        if ($stable === '' && !$version->isStable()) {
+            continue;
+        }
+        
+        if (\Herrera\Version\Comparator::isLessThan($latest, $version)) {
+            $latest = $version;
+        }    
+    }
+    
+    return new \Symfony\Component\HttpFoundation\RedirectResponse("/releases/v$latest/deployer.phar");
+})
+    ->assert('stable', '(\-beta)?')
+    ->value('stable', '');
 
 
 // Show pages. This route must be last.
