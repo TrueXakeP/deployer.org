@@ -1,3 +1,9 @@
+.sidebar-container,
+.sidebar-pusher,
+.sidebar-content {
+    min-height: 100vh;
+}
+
 body.sidebar-open .sidebar-container,
 body.sidebar-open .sidebar-pusher,
 body.sidebar-open .sidebar-content {
