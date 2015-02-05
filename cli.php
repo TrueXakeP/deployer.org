@@ -17,6 +17,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
 
     $run = function ($command) use ($releases, $output) {
         $process = new \Symfony\Component\Process\Process("cd $releases && $command");
+        $process->setTimeout(null);
         $process->mustRun();
         $out = $process->getOutput();
         $output->write($out);
