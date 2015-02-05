@@ -53,10 +53,12 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
         $output->write("Building Phar for $tag tag.\n");
 
         try {
+            $version = str_replace('v', '', $tag); // Set version from tag without leading "v".
+            
             // Checkout tag, update vendors, run build tool.
             $run("cd deployer && git checkout tags/$tag --force 2>&1");
             $run('cd deployer && /usr/local/bin/composer update --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
-            $run('cd deployer && php ' . (is_file("$releases/deployer/bin/build") ? 'bin/build' : 'build'));
+            $run('cd deployer && php build -v="' . $version . '"');
 
             // Create new dir and copy phar there.
             mkdir($dir);
@@ -67,7 +69,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
                 'name' => 'deployer.phar',
                 'sha1' => sha1_file("$dir/deployer.phar"),
                 'url' => "http://deployer.org/releases/$tag/deployer.phar",
-                'version' => $version = str_replace('v', '', $tag), // Place version from tag without leading "v".
+                'version' => $version, 
             ];
 
             // Check if this version already in manifest.json.
