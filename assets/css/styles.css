@@ -82,11 +82,6 @@ header h1 a:hover {
     width: 12px;
     height: 12px;
     border-radius: 100%;
-    
-    /* For bonus */
-    transition: all .5s ease-in;
-    background-position: center center;
-    background-size: 450%;
 }
 
 .toolbar i:hover {
@@ -109,6 +104,9 @@ header h1 a:hover {
 }
 
 .toolbar i.bonus {
+    transition: width, height, top .5s ease-in;
+    background-position: center center;
+    background-size: 450%;
     background-image: url("/assets/img/tit.gif");
     width: 40px;
     height: 40px;
