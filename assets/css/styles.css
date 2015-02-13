@@ -104,12 +104,17 @@ header h1 a:hover {
 }
 
 .toolbar i.bonus {
+    transition: all .5s ease-in;
     background-image: url("/assets/img/tit.gif");
     background-position: center center;
     background-size: 450%;
     width: 40px;
     height: 40px;
     top: -7px;
+}
+
+.toolbar i.bonus:hover {
+    opacity: 1;
 }
 
 .toolbar img {
