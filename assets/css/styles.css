@@ -101,12 +101,13 @@ header h1 a:hover {
 .toolbar i.plus {
     left: 50px;
     background-color: #5EC034;
+    /* For bonus */
+    background-position: center center;
+    background-size: 450%;
 }
 
 .toolbar i.bonus {
-    transition: width, height, top .5s ease-in;
-    background-position: center center;
-    background-size: 450%;
+    transition: all .5s ease-in;
     background-image: url("/assets/img/tit.gif");
     width: 40px;
     height: 40px;
