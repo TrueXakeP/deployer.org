@@ -58,7 +58,14 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
             
             // Checkout tag, update vendors, run build tool.
             $run("cd deployer && git checkout tags/$tag --force 2>&1");
-            $run('cd deployer && /usr/local/bin/composer update --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
+
+            // Require what Deployer suggests. 
+            $run('cd deployer && /usr/local/bin/composer require herzult/php-ssh:~1.0');
+            
+            // Install vendors.
+            $run('cd deployer && /usr/local/bin/composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
+
+            // And build.
             $run('cd deployer && php build -v="' . $version . '"');
 
             // Create new dir and copy phar there.
