@@ -50,7 +50,7 @@ $(function () {
     }, 1000);
 
     input.autocomplete({
-        '^\\w*$': ['ls', 'pwd', 'dep', 'help', 'php -v', 'boobs', 'tit'],
+        '^\\w*$': ['ls', 'pwd', 'dep', 'help', 'php -v'],
         '^dep \\w*$': ['deploy', 'rollback', 'migrate', 'help', 'list']
     });
 
@@ -114,8 +114,6 @@ $(function () {
             '<i>Successfully migrated!</i>\n']);
 
         to(command, ['php', 'php -v'], 'PHP 6.0.0 (cli) (built: Feb 30 2016 10:96:69)\n');
-
-        to(command, ['tit', 'boobs'], ['<img src="/assets/img/tit.gif" alt="">\n', '']);
 
         if (notFound) {
             console.append('Sorry but this command can not be run in the emulator.\n');
