@@ -185,22 +185,47 @@ section h4 {
     margin-top: 40px;
 }
 
-section.features .row:first-child {
-    margin-top: 20px;
-}
-
-section.features .row:not(:first-child) {
-    margin-top: 80px;
+section.features .row {
+    max-width: 1000px;
+    margin: 5px auto;
 }
 
 section.features h2 {
+    font-family: 'Lobster', cursive;
     text-align: center;
+    margin-top: 0;
+}
+
+section.features .lead {
+    text-align: center;
+}
+
+section.features .next {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+section.features .download {
+    text-align: center;
+}
+
+section.features ul {
+    list-style: none;
+}
+
+section.features li {
+    clear: both;
     margin-top: 10px;
 }
 
-section.features .feature-icon {
-    display: block;
-    margin: 0 auto;
+section.features img {
+    width: 44px;
+    height: 44px;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 section.getting-started {
@@ -231,6 +256,10 @@ section.donate .table {
 
 section.donate .table td {
     text-align: center;
+}
+
+section.donate h2 {
+    font-family: 'Lobster', cursive;
 }
 
 .docs-bottom-nav {

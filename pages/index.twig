@@ -13,7 +13,7 @@
         <div class="code">
             <div class="console">Press enter to submit commands.<br></div>
             <form id="console">
-                <label for="input">&gt;</label>
+                <label for="input">$</label>
 
                 <div class="input">
                     <input type="text" value="" tabindex="1">
@@ -27,80 +27,35 @@
     <section class="features">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <img src="/assets/icons/fast.png" class="feature-icon">
-
-                    <h2>Fast</h2>
-
-                    <p>Deploy your project to all your servers faster what you ever can imagine! Deployer packed full of
-                        time-saving features and optimisations, best for performance and development.</p>
+                <div class="col-md-6">
+                    <h2>What is Deployer?</h2>
+                    <div class="lead">
+                        <em>Deployer</em> is deployment tool written in PHP.
+                    </div>
+                    <div class="download">
+                        <a href="/deployer.phar" class="btn btn-danger btn-lg">Download deployer.phar</a>
+                    </div>
+                    <div class="next">
+                        And run next commands in console:
+                    </div>
+                    <pre><code>mv deployer.phar /usr/local/bin/dep
+chmod +x /usr/local/bin/dep</code></pre>
+                    <div class="next">
+                        Or you can install it with composer:
+                    </div>
+                    <pre><code>composer require deployer/deployer:~3.0</code></pre>
                 </div>
-                <div class="col-md-4">
-                    <img src="/assets/icons/modular.png" class="feature-icon">
-
-                    <h2>Modular</h2>
-
-                    <p>Create your deploy script from our modular blocks called recipies.
-                        You can find common recipes <a href="https://github.com/deployphp/deployer/tree/master/recipe">here</a>
-                        and 3th party recipes <a href="https://github.com/deployphp/recipes">here</a>.</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="/assets/icons/cleancode.png" class="feature-icon">
-
-                    <h2>Clean code</h2>
-
-                    <p>Deployer has very clean code and good tested. Repository is watched by many code quality tools,
-                        every pull request also checked by QA tools.</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <img src="/assets/icons/quickly.png" class="feature-icon">
-
-                    <h2>Get setup quickly</h2>
-
-                    <p>Start with existing recipe or extend it for you needs. Deployer has simple API for writing your
-                        deploy scripts.</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="/assets/icons/productivity.png" class="feature-icon">
-
-                    <h2>Increase productivity</h2>
-
-                    <p>Write deploy recipe only once or use recipes written by other peoples.</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="/assets/icons/rollback.png" class="feature-icon">
-
-                    <h2>Rollbacks</h2>
-
-                    <p>If something is wrong, a simple rollback to previous release is possible.</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <img src="/assets/icons/atomic.png" class="feature-icon">
-
-                    <h2>Atomic deploys</h2>
-
-                    <p>Prepare codebase, warm cache, do other stuff, and then deploy them with symlinks!</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="/assets/icons/parallel.png" class="feature-icon">
-
-                    <h2>Parallel tasks</h2>
-
-                    <p>Deployer can run tasks in parallel, no other extension is required!</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="/assets/icons/consistency.png" class="feature-icon">
-
-                    <h2>Consistency</h2>
-
-                    <p>Deployer keeps consistency between servers, even in parallel mode! If one task fails, subsequent tasks
-                        will not be executed on all servers.</p>
+                <div class="col-md-6">
+                    <h2>Deployer Features</h2>
+                    <ul>
+                        <li><img src="/assets/icons/fast.png"><strong>Fast</strong> Deployer packed full of time-saving features and optimisations, best for performance and development.</li>
+                        <li><img src="/assets/icons/modular.png"><strong>Modular</strong> Create your deploy script from our modular blocks called recipies. You can find common recipes <a href="https://github.com/deployphp/deployer/tree/master/recipe">here</a> and 3th party recipes <a href="https://github.com/deployphp/recipes">here</a>.</li>
+                        <li><img src="/assets/icons/cleancode.png"><strong>Clean code</strong> Deployer has very clean code and good tested. Repository is watched by many code quality tools, every pull request also checked by QA tools.</li>
+                        <li><img src="/assets/icons/rollback.png"><strong>Rollbacks</strong> If something is wrong, a simple rollback to previous release is possible.</li>
+                        <li><img src="/assets/icons/atomic.png"><strong>Atomic deploys</strong> Prepare codebase, warm cache, do other stuff, and then deploy them with symlinks!</li>
+                        <li><img src="/assets/icons/parallel.png"><strong>Parallel tasks</strong> Deployer can run tasks in parallel, no other extension is required!</li>
+                        <li><img src="/assets/icons/consistency.png"><strong>Consistency</strong> Deployer keeps consistency between servers, even in parallel mode! If one task fails, subsequent tasks will not be executed on all servers.</li>
+                    </ul>
                 </div>
             </div>
         </div>

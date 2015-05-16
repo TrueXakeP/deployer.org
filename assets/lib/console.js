@@ -50,7 +50,7 @@ $(function () {
     }, 1000);
 
     input.autocomplete({
-        '^\\w*$': ['ls', 'pwd', 'dep', 'help', 'php -v'],
+        '^\\w*$': ['ls', 'pwd', 'dep', 'help', 'php -v', 'boobs', 'tit'],
         '^dep \\w*$': ['deploy', 'rollback', 'migrate', 'help', 'list']
     });
 
@@ -62,7 +62,7 @@ $(function () {
             return false;
         }
 
-        console.append('&gt; ' + command + '\n');
+        console.append('$ ' + command + '\n');
 
         notFound = true;
 
@@ -94,26 +94,28 @@ $(function () {
         to(command, ['pwd'], '/home/www\n');
 
         to(command, ['dep deploy'], [
-            'Preparing server for deploy.................................✔\n',
-            'Updating code...............................................✔\n',
-            'Creating cache dir..........................................✔\n',
-            'Creating symlinks for shared files..........................✔\n',
-            'Normalizing asset timestamps................................✔\n',
-            'Installing vendors..........................................✔\n',
-            'Dumping assets..............................................✔\n',
-            'Warming up cache............................................✔\n',
-            'Cleaning up old releases....................................✔\n',
+            '✔ Preparing server for deploy\n',
+            '✔ Updating code\n',
+            '✔ Creating cache dir\n',
+            '✔ Creating symlinks for shared files\n',
+            '✔ Normalizing asset timestamps\n',
+            '✔ Installing vendors\n',
+            '✔ Dumping assets\n',
+            '✔ Warming up cache\n',
+            '✔ Cleaning up old releases\n',
             '<i>Successfully deployed!</i>\n']);
 
         to(command, ['dep rollback'], [
-            'Restoring previous releases.................................✔\n',
+            '✔ Restoring previous releases\n',
             '<i>Successfully restored!</i>\n']);
 
         to(command, ['dep migrate'], [
-            'Migrating prod database.....................................✔\n',
+            '✔ Migrating prod database\n',
             '<i>Successfully migrated!</i>\n']);
 
-        to(command, ['php', 'php -v'], 'PHP 6.0.0 (cli) (built: Feb 30 2016 10:96:69)\n');
+        to(command, ['php', 'php -v'], 'PHP 600 (cli) (built: Feb 30 2016 10:96:69)\n');
+
+        to(command, ['tit', 'boobs'], ['<img src="http://deployer.org/tit.gif" alt="">\n', '']);
 
         if (notFound) {
             console.append('Sorry but this command can not be run in the emulator.\n');
