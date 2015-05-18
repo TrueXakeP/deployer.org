@@ -307,6 +307,10 @@ pre {
     border: none;
 }
 
+p, blockquote {
+    font-size: 17px;
+}
+
 blockquote {
     background-color: #E2DDCF;
 }
