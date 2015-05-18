@@ -300,3 +300,9 @@ footer {
     padding-bottom: 20px;
     background: #F3EFE0;
 }
+
+pre {
+    background-color: #272822;
+    color: #ffffff;
+    border: none;
+}
