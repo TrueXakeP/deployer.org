@@ -306,3 +306,7 @@ pre {
     color: #ffffff;
     border: none;
 }
+
+blockquote {
+    background-color: #F7F5EF;
+}
