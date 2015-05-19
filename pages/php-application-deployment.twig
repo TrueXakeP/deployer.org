@@ -1,0 +1,24 @@
+{% extends 'layout.twig' %}
+
+{% set title = 'PHP Application Deployment' %}
+{% set h1 = title %}
+
+{% block content %}
+    <p class="lead">
+        The modern world of web application development requires a modern approach to <strong>application deployment<strong>. 
+        It must be fast, reliable and consistent. All this is available with <em>Deployer</em>.
+    </p>
+    
+    <p>    
+        <a href="/deployer.phar" class="btn btn-danger btn-lg">Download deployer.phar</a>
+    </p>
+    <p>
+        And run next commands in console:
+    </p>
+    <pre><code>mv deployer.phar /usr/local/bin/dep
+chmod +x /usr/local/bin/dep</code></pre>
+    <p>
+        Or you can install it with composer:
+    </p>
+    <pre><code>composer require deployer/deployer:~3.0</code></pre>
+{% endblock %}
