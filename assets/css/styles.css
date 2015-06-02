@@ -211,6 +211,12 @@ section.features .download {
     text-align: center;
 }
 
+section.features .download-link {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+}
+
 section.features ul {
     list-style: none;
 }
@@ -317,4 +323,9 @@ blockquote {
     margin-top: 40px;
     margin-bottom: 40px;
     background-color: #E0DCCA;
+}
+
+ul.download-list .highlighted {
+    font-weight: 700;
+    font-size: 18px;
 }
