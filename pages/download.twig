@@ -1,0 +1,44 @@
+{% extends 'layout.twig' %}
+
+{% set title = 'Download' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+
+            <h1>Download</h1>
+            <p>
+
+                In every major release, the latest stable version is highlighted.
+            </p>
+
+            <h3>Installation</h3>
+            <div class="row">
+                <div class="col-sm-12 col-md-10">
+                    {% include 'partials/installation.twig' %}
+                </div>
+            </div>
+            <p>or</p>
+            <div class="row">
+                <div class="col-sm-12 col-md-10">
+                    {% include 'partials/installation.twig' with {type: 'composer', version: '<version>'} %}
+                </div>
+            </div>
+
+            <h3>Phar downloads</h3>
+            {% if manifest_data is null %}
+                <p>-</p>
+            {% else %}
+                <ul class="download-list">
+                    {% for version_data in manifest_data %}
+                        {% if version_data.highlighted %}
+                            <li><span class="highlighted"><a href="{{ version_data.url }}">{{ version_data.version }}</a></span></li>
+                        {% else %}
+                            <li><a href="{{ version_data.url }}">{{ version_data.version }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% if type is defined and type == 'composer' %}
+{% set version = version is defined ? version : '~3.0' %}
+{% set code = '
+composer require deployer/deployer:' ~ version ~ '
+' %}
+{% else %}
+{% set code = '
+mv deployer.phar /usr/local/bin/dep
+chmod +x /usr/local/bin/dep
+' %}
+{% endif %}
+
+{% spaceless %}
+    <pre>
+        <code>{{ code|trim }}</code>
+    </pre>
+{% endspaceless %}

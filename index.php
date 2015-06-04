@@ -189,29 +189,92 @@ $app->get('/{stable}deployer.phar', function (Request $request, $stable) use ($a
     }
 
     $manifest = json_decode(file_get_contents($file->getPathname()), true);
-    
-    // Find latest stable version or unstable if $stable variable not equals empty string. 
+
+    // Find latest stable version or unstable if $stable variable not equals empty string.
 
     $latest  = new \Herrera\Version\Version();
     $builder = new \Herrera\Version\Builder();
-    
+
     foreach ($manifest as $row) {
         $version = $builder->importString($row['version'])->getVersion();
-        
+
         if ($stable === '' && !$version->isStable()) {
             continue;
         }
-        
+
         if (\Herrera\Version\Comparator::isLessThan($latest, $version)) {
             $latest = $version;
-        }    
+        }
     }
-    
+
     return new \Symfony\Component\HttpFoundation\RedirectResponse("/releases/v$latest/deployer.phar");
 })
     ->assert('stable', '(beta\/)?')
     ->value('stable', '');
 
+// Download page
+$app->get('/download', function (Request $request) use ($app) {
+    // Getting the manifest data
+    $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
+    $manifestData = null;
+
+    $response = new Response();
+
+    // Caching setup
+    $response->setPublic();
+
+    // Handling the manifest data
+    if ($file->isReadable()) {
+        // If there were no new releases, then just return with the last on
+        $response->setLastModified(new DateTime('@' . $file->getMTime()));
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
+        $manifestData = json_decode(file_get_contents($file->getPathname()), true);
+
+        // Sorting the versions in descending order
+        $builder = new \Herrera\Version\Builder();
+        uasort($manifestData, function($a, $b) use ($builder) {
+            if ($a['version'] === $b['version']) {
+                return 0;
+            }
+
+            return \Herrera\Version\Comparator::isLessThan(
+                $builder->importString($a['version'])->getVersion(),
+                $builder->importString($b['version'])->getVersion()
+            );
+        });
+
+        // Adding the "highlighted" bool value to every version.
+        // Only the latest stable release is highlighted in every major version.
+        $prevMajorVersion = null;
+        foreach ($manifestData as $key => $data) {
+            $manifestData[$key]['highlighted'] = false;
+
+            $version = $builder->importString($data['version'])->getVersion();
+            if (
+                $version->getMajor() !== $prevMajorVersion &&
+                $version->isStable()
+            ) {
+                $manifestData[$key]['highlighted'] = true;
+                $prevMajorVersion = $version->getMajor();
+            }
+        }
+    }
+
+    // Rendering the template, setting up the response
+    $response->headers->set('Content-Type', 'text/html');
+    $response->setCharset('UTF-8');
+    $response->setContent(
+        // I couldn't get myself to use that `render()` function... ><
+        $app['twig']->render('download.twig', [
+            'manifest_data' => $manifestData,
+        ]
+    ));
+
+    return $response;
+});
 
 // Show pages. This route must be last.
 // Cache rendered response with validate file modify time.
@@ -219,20 +282,54 @@ $app->get('/{page}', function (Request $request, $page) use ($app) {
     $response = new Response();
     $response->setPublic();
 
-    $file = new SplFileInfo($app['twig.path'] . '/' . $page . '.twig');
+    $templateFile = new SplFileInfo($app['twig.path'] . '/' . $page . '.twig');
 
-    if (!$file->isReadable()) {
+    if (!$templateFile->isReadable()) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    $response->setLastModified(new DateTime('@' . $file->getMTime()));
-    if ($response->isNotModified($request)) {
-        return $response;
+    $templateParams = [];
+    if ($page === 'index') {
+        $manifestFile = new SplFileInfo($app['releases.path'] . '/manifest.json');
+
+        // Getting the latest stable release
+        $manifestData = json_decode(file_get_contents($manifestFile->getPathname()), true);
+
+        $stable = '';
+        $latest = new \Herrera\Version\Version();
+        $builder = new \Herrera\Version\Builder();
+
+        foreach ($manifestData as $versionData) {
+            $version = $builder->importString($versionData['version'])->getVersion();
+
+            if ($stable === '' && !$version->isStable()) {
+                continue;
+            }
+
+            if (\Herrera\Version\Comparator::isLessThan($latest, $version)) {
+                $latest = $version;
+            }
+        }
+
+        $templateParams['latest_deployer_version'] = $latest;
+
+        $templateLastModified = new DateTime('@' . $templateFile->getMTime());
+        $manifestLastModified = new DateTime('@' . $manifestFile->getMTime());
+
+        $response->setLastModified($templateLastModified > $manifestLastModified ? $templateLastModified : $manifestLastModified);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+    } else {
+        $response->setLastModified(new DateTime('@' . $templateFile->getMTime()));
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
     }
 
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
-    $response->setContent(render($page . '.twig'));
+    $response->setContent(render($page . '.twig', $templateParams));
 
     return $response;
 })

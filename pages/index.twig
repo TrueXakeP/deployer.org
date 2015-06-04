@@ -30,20 +30,20 @@
                 <div class="col-md-6">
                     <h2>What is Deployer?</h2>
                     <div class="lead">
-                        <em>Deployer</em> is deployment tool written in PHP.
+                        <em>Deployer</em> is a deployment tool written in PHP.
                     </div>
                     <div class="download">
-                        <a href="/deployer.phar" class="btn btn-danger btn-lg">Download deployer.phar</a>
+                        <a href="/deployer.phar" class="btn btn-danger btn-lg">Download deployer.phar ({{ latest_deployer_version }})</a>
                     </div>
+                    <a href="/download" class="download-link">or download a different version</a>
                     <div class="next">
-                        And run next commands in console:
+                        And run the following commands in the console:
                     </div>
-                    <pre><code>mv deployer.phar /usr/local/bin/dep
-chmod +x /usr/local/bin/dep</code></pre>
+                    {% include 'partials/installation.twig' %}
                     <div class="next">
                         Or you can install it with composer:
                     </div>
-                    <pre><code>composer require deployer/deployer:~3.0</code></pre>
+                    {% include 'partials/installation.twig' with {type: 'composer'} %}
                 </div>
                 <div class="col-md-6">
                     <h2>Deployer Features</h2>
