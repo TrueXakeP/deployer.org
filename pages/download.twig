@@ -32,9 +32,9 @@
                 <ul class="download-list">
                     {% for version_data in manifest_data %}
                         {% if version_data.highlighted %}
-                            <li><span class="highlighted"><a href="{{ version_data.url }}">{{ version_data.version }}</a></span></li>
+                            <li><span class="highlighted"><a href="{{ version_data.url }}" onclick="ga('send', 'event', 'button', 'download', 'version', '{{ version_data.version }}');">{{ version_data.version }}</a></span></li>
                         {% else %}
-                            <li><a href="{{ version_data.url }}">{{ version_data.version }}</a></li>
+                            <li><a href="{{ version_data.url }}" onclick="ga('send', 'event', 'button', 'download', 'version', '{{ version_data.version }}');">{{ version_data.version }}</a></li>
                         {% endif %}
                     {% endfor %}
                 </ul>
