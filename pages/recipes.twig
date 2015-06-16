@@ -1,0 +1,26 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-2 visible-lg-block docs-nav">
+            <ul class="nav nav-stacked">
+                {% for a in nav %}
+                    <li>
+                        <a href="{{ a.link }}">{{ a.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <small>
+                Found a typo? Is something wrong in this documentation?<br>
+                Just <a href="https://github.com/deployphp/recipes/">fork and edit</a> it!
+            </small>
+        </div>
+
+        <div class="col-md-10">
+            {{ content|raw }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

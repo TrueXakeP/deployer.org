@@ -8,6 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/src/helpers.php';
+
+#########################
+#     Configuration     #
+#########################
+
 
 // Init app with parameters from config.ini
 $app = new Silex\Application(parse_ini_file(is_readable('config.ini') ? 'config.ini' : 'config.ini.dist'));
@@ -25,7 +31,10 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app['pages.path'] = __DIR__ . '/pages';
 
 // Set path for docs local repository.
-$app['docs.path'] = __DIR__ . '/documentation';
+$app['docs.path'] = __DIR__ . '/_documentation';
+
+// Set path for recipes local repository.
+$app['recipes.path'] = __DIR__ . '/_recipes';
 
 // Set path for releases.
 $app['releases.path'] = __DIR__ . '/releases';
@@ -37,8 +46,14 @@ $app['cli'] = __FILE__;
 $app['schedule'] = __DIR__ . '/logs/schedule.log';
 
 
+#########################
+#   Mount controller    #
+#########################
+
+
 $app->mount('/', include __DIR__ . '/controllers/update.php');
 $app->mount('/', include __DIR__ . '/controllers/docs.php');
+$app->mount('/', include __DIR__ . '/controllers/recipes.php');
 $app->mount('/', include __DIR__ . '/controllers/download.php');
 $app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, because match everything.
 
@@ -46,6 +61,7 @@ $app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, b
 #########################
 #   Start application   #
 #########################
+
 
 if (php_sapi_name() == "cli") {
     require __DIR__ . '/cli.php';
@@ -55,23 +71,4 @@ if (php_sapi_name() == "cli") {
     } else {
         $app->run();
     }
-}
-
-
-#########################
-#   Helper functions    #
-#########################
-
-
-/**
- * Render file with twig.
- *
- * @param string $file
- * @param array $params
- * @return string
- */
-function render($file, $params = [])
-{
-    global $app; // Yes, I know that =)
-    return $app['twig']->render($file, $params);
 }

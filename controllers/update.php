@@ -32,31 +32,6 @@ $app->before(function (Request $request) use ($app) {
 }, Silex\Application::EARLY_EVENT);
 
 
-// Auto update docs on GitHub WebHook.
-$controller->post('update/docs', function (Request $request) use ($app) {
-    $event = $request->headers->get('X-Github-Event');
-    $payload = $request->attributes->get('payload');
-
-    if (
-        (
-            $event === 'pull_request' &&
-            $payload['action'] === 'closed' &&
-            $payload['pull_request']['merged']
-        ) || (
-            $event === 'push'
-        )
-    ) {
-
-        $process = new \Symfony\Component\Process\Process('php ' . __FILE__ . ' update-documentation');
-        $process->run();
-
-        return new Response("Documentation updated successfully.\n\n" . $process->getOutput(), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
-    }
-
-    return new Response('Documentation was not updated.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
-});
-
-
 // Auto update deployer.phar on GitHub WebHook.
 $controller->post('update/deployer', function (Request $request) use ($app) {
     $event = $request->headers->get('X-Github-Event');
@@ -64,12 +39,35 @@ $controller->post('update/deployer', function (Request $request) use ($app) {
 
     if ($event === 'create' && $payload['ref_type'] === 'tag') {
 
-        file_put_contents($app['schedule'], "update-deployer\n", FILE_APPEND);
+        file_put_contents($app['schedule'], "update:deployer\n", FILE_APPEND);
 
         return new Response('Schedule task to update deployer created.', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
     }
 
     return new Response('', Response::HTTP_FORBIDDEN, ['Content-Type' => 'text/plain']);
 });
+
+
+// Auto update docs on GitHub WebHook.
+$controller->post('update/{what}', function (Request $request, $what) use ($app) {
+    $event = $request->headers->get('X-Github-Event');
+    $payload = $request->attributes->get('payload');
+
+    if (($event === 'pull_request' &&
+            $payload['action'] === 'closed' &&
+            $payload['pull_request']['merged']
+        ) || (
+            $event === 'push'
+        )) {
+
+        $process = new \Symfony\Component\Process\Process('php ' . $app['cli'] . ' update:' . $what);
+        $process->run();
+
+        return new Response("Update `$what` successfully.\n\n" . $process->getOutput(), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+    }
+
+    return new Response("The `$what` was not updated.", Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+})
+    ->assert('what', '(documentation)|(recipes)');
 
 return $controller;

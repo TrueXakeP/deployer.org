@@ -11,7 +11,7 @@ if (!$app instanceof Silex\Application) {
 
 $console = new \Symfony\Component\Console\Application('deployer.org');
 
-$updateDeployerCommand = new \Symfony\Component\Console\Command\Command('update-deployer');
+$updateDeployerCommand = new \Symfony\Component\Console\Command\Command('update:deployer');
 $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
     $releases = $app['releases.path'];
 
@@ -108,7 +108,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
 });
 $console->add($updateDeployerCommand);
 
-$updateDocumentationCommand = new \Symfony\Component\Console\Command\Command('update-documentation');
+$updateDocumentationCommand = new \Symfony\Component\Console\Command\Command('update:documentation');
 $updateDocumentationCommand->setCode(function ($input, $output) use ($app) {
     $run = function ($command) use ($app) {
         $process = new \Symfony\Component\Process\Process('cd ' . $app['docs.path'] . ' && ' . $command);
@@ -125,6 +125,25 @@ $updateDocumentationCommand->setCode(function ($input, $output) use ($app) {
 });
 $console->add($updateDocumentationCommand);
 
+
+$updateRecipesCommand = new \Symfony\Component\Console\Command\Command('update:recipes');
+$updateRecipesCommand->setCode(function ($input, $output) use ($app) {
+    $run = function ($command) use ($app) {
+        $process = new \Symfony\Component\Process\Process('cd ' . $app['recipes.path'] . ' && ' . $command);
+        $process->mustRun();
+        return $process->getOutput();
+    };
+
+    if (is_file($app['recipes.path'] . '/README.md')) {
+        $output->write($run('git reset --hard origin/master'));
+        $output->write($run('git pull https://github.com/deployphp/recipes.git master 2>&1'));
+    } else {
+        $output->write($run('git clone --depth 1 https://github.com/deployphp/recipes.git . 2>&1'));
+    }
+});
+$console->add($updateRecipesCommand);
+
+
 $scheduleCommand = new \Symfony\Component\Console\Command\Command('schedule');
 $scheduleCommand->setCode(function ($input, $output) use ($app) {
     $commands = explode("\n", file_get_contents($app['schedule']));
@@ -132,7 +151,7 @@ $scheduleCommand->setCode(function ($input, $output) use ($app) {
     while (count($commands) > 0) {
         $command = array_shift($commands);
             
-        if (in_array($command, ['update-deployer', 'update-documentation'], true)) {
+        if (in_array($command, ['update:deployer', 'update:documentation', 'update:recipes'], true)) {
             
             // Remove same commands.
             $commands = array_filter($commands, function ($i) use ($command) {

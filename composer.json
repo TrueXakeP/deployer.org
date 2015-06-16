@@ -1,10 +1,11 @@
 {
     "require": {
-        "silex/silex": "~1.2",
+        "silex/silex": "^1.2",
         "twig/twig": ">=1.8,<2.0-dev",
-        "erusev/parsedown": "~1.4",
-        "symfony/console": "~2.6",
-        "symfony/process": "~2.6",
-        "herrera-io/version": "~1.0"
+        "erusev/parsedown": "^1.4",
+        "symfony/console": "^2.6",
+        "symfony/process": "^2.6",
+        "herrera-io/version": "^1.0",
+        "symfony/finder": "^2.7"
     }
 }
