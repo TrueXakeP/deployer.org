@@ -27,7 +27,9 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => [__DIR__ . '/pages', __DIR__ . '/includes'],
 ));
 
-// set path for pages.
+$app['base_url'] = 'http://deployer.org';
+
+// Set path for pages.
 $app['pages.path'] = __DIR__ . '/pages';
 
 // Set path for docs local repository.
@@ -55,6 +57,7 @@ $app->mount('/', include __DIR__ . '/controllers/update.php');
 $app->mount('/', include __DIR__ . '/controllers/docs.php');
 $app->mount('/', include __DIR__ . '/controllers/recipes.php');
 $app->mount('/', include __DIR__ . '/controllers/download.php');
+$app->mount('/', include __DIR__ . '/controllers/sitemap.php');
 $app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, because match everything.
 
 
