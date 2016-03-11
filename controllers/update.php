@@ -60,13 +60,12 @@ $controller->post('update/{what}', function (Request $request, $what) use ($app)
             $event === 'push'
         )) {
 
-        $process = new \Symfony\Component\Process\Process('php ' . $app['cli'] . ' update:' . $what);
-        $process->run();
+        file_put_contents($app['schedule'], "update:$what\n", FILE_APPEND);
 
-        return new Response("Update `$what` successfully.\n\n" . $process->getOutput(), Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+        return new Response("Schedule task to update `$what` created.", Response::HTTP_OK, ['Content-Type' => 'text/plain']);
     }
 
-    return new Response("The `$what` was not updated.", Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+    return new Response('', Response::HTTP_FORBIDDEN, ['Content-Type' => 'text/plain']);
 })
     ->assert('what', '(documentation)|(recipes)');
 

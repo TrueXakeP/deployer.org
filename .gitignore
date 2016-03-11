@@ -1,6 +1,8 @@
 vendor/
 cache/
 releases/
+_documentation/
+_recipes/
 .idea/
 logs/
 .htaccess
