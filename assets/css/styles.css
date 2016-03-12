@@ -256,15 +256,7 @@ section.getting-started .btn-primary:hover {
     transition: all .5s ease-in;
 }
 
-section.donate .table {
-    table-layout: fixed;
-}
-
-section.donate .table td {
-    text-align: center;
-}
-
-section.donate h2 {
+section.support h2 {
     font-family: 'Lobster', cursive;
 }
 
