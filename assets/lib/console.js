@@ -62,6 +62,8 @@ $(function () {
             return false;
         }
 
+        ga('send', 'event', 'console', 'submit', command);
+
         console.append('$ ' + command + '\n');
 
         notFound = true;
