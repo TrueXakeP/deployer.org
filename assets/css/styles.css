@@ -234,29 +234,6 @@ section.features img {
     margin-bottom: 10px;
 }
 
-section.features .t-shirt {
-    display: block;
-    width: 240px;
-    height: 285px;
-    margin: 30px auto;
-}
-
-section.features .t-shirt img {
-    width: 240px;
-    height: 285px;
-}
-
-section.features .t-shirt-buy {
-    display: block;
-    margin: 0 auto;
-    width: 150px;
-    font-family: 'Lobster', cursive;
-    font-size: 26px;
-    color: #4183c4;
-    border-color: #4183c4;
-    background: transparent url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22160%22%20height%3D%2215%22%20viewBox%3D%220%200%20160%2015%22%20preserveAspectRatio%3D%22xMinYMin%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%234183c4%22%20stroke-opacity%3D%220.3%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M0%200.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-4.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-9.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%205.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%2010.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14%22%2F%3E%3C%2Fsvg%3E");
-}
-
 section.getting-started {
     color: #ffffff;
     background: #4183c4;
@@ -294,6 +271,41 @@ section.twitter .twit {
     display: inline-block;
     vertical-align: top;
 }
+
+section.stickers {
+    border-bottom: 30px #2fccc0 solid;
+}
+
+section.stickers h2 {
+    font-family: 'Lobster', cursive;
+}
+
+section.stickers .stickers-list {
+    display: flex;
+    padding: 20px;
+}
+
+section.stickers .sticker {
+    display: flex;
+    flex-direction: column;
+}
+
+section.stickers .sticker img {
+    width: 149px;
+    height: 118px;
+}
+
+section.stickers .sticker-buy {
+    align-self: center;
+    margin-top: 10px;
+    width: 110px;
+    font-family: 'Lobster', cursive;
+    font-size: 22px;
+    color: #4183c4;
+    border-color: #4183c4;
+    background: transparent url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22160%22%20height%3D%2215%22%20viewBox%3D%220%200%20160%2015%22%20preserveAspectRatio%3D%22xMinYMin%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%234183c4%22%20stroke-opacity%3D%220.3%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M0%200.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-4.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0-9.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%205.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14M0%2010.5c26.7%200%2053.3%2014%2080%2014%2026.7%200%2053.3-14%2080-14%22%2F%3E%3C%2Fsvg%3E");
+}
+
 
 .docs-bottom-nav {
     text-align: center;
