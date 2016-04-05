@@ -288,6 +288,7 @@ section.stickers .stickers-list {
 section.stickers .sticker {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     margin-right: 50px;
 }
 
