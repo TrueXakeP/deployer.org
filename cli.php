@@ -63,7 +63,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
             $run('cd deployer && /usr/local/bin/composer require herzult/php-ssh:~1.0 --ignore-platform-reqs');
 
             // Install vendors.
-            $run('cd deployer && /usr/local/bin/composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts');
+            $run('cd deployer && /usr/local/bin/composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts --ignore-platform-reqs');
 
             // And build.
             $run('cd deployer && php build -v="' . $version . '"');
