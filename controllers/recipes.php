@@ -37,7 +37,10 @@ $controller->get('/recipes/{page}', function ($page, Request $request) use ($app
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
 
-    list($body, $title) = parse_md(file_get_contents($file->getPathname()));
+    $content = file_get_contents($file->getPathname());
+    $content = preg_replace('/\(docs\/(.*?)\.md\)/', '(' . request()->getBaseUrl() . '/recipes/$1)', $content);
+    
+    list($body, $title) = parse_md($content);
 
     // Generate menu based on files list
     $finder = new Finder();

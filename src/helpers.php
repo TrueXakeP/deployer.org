@@ -51,13 +51,18 @@ function parse_md($content)
         $title = '';
     }
 
-    // Replace links urls.
-    $content = preg_replace('/\((.*?)\.md\)/', '(' . request()->getBaseUrl() . '/docs/$1)', $content);
-
     $body = $parsedown->text($content);
 
     // Add classes.
     $body = str_replace('<table>', '<table class="table table-bordered">', $body);
 
     return [$body, $title];
+}
+
+/**
+ * @param string $content
+ * @return string
+ */
+function parse_links($content) {
+    return preg_replace('/\((.*?)\.md\)/', '(' . request()->getBaseUrl() . '/docs/$1)', $content);
 }

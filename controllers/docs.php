@@ -30,10 +30,10 @@ $controller->get('/docs/{page}', function ($page, Request $request) use ($app) {
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
 
-    list($body, $title) = parse_md(file_get_contents($file->getPathname()));
+    list($body, $title) = parse_md(parse_links(file_get_contents($file->getPathname())));
 
     // Get docs navigation from README.md
-    list($menu, $_) = parse_md(file_get_contents($app['docs.path'] . '/README.md'));
+    list($menu, $_) = parse_md(parse_links(file_get_contents($app['docs.path'] . '/README.md')));
 
     $response->setContent(render('docs.twig', [
         'page' => $page,
