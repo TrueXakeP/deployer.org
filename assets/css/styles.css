@@ -262,42 +262,34 @@ section.support h2 {
 
 section.twitter {
     background: #2fccc0;
-    overflow: hidden;
-    white-space: nowrap;
+    padding: 10px;
+    text-align: center;
 }
 
 section.twitter .twit {
-    margin: 10px;
+    margin: 3px;
     display: inline-block;
     vertical-align: top;
 }
 
-section.stickers {
-    border-bottom: 30px #2fccc0 solid;
-}
-
-section.stickers h2 {
-    font-family: 'Lobster', cursive;
-}
-
-section.stickers .stickers-list {
+.stickers .stickers-list {
     display: flex;
     padding: 20px;
 }
 
-section.stickers .sticker {
+.stickers .sticker {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     margin-right: 50px;
 }
 
-section.stickers .sticker img {
+.stickers .sticker img {
     width: 149px;
     height: 118px;
 }
 
-section.stickers .sticker-buy {
+.stickers .sticker-buy {
     align-self: center;
     margin-top: 10px;
     width: 110px;
