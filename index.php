@@ -1,11 +1,9 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/src/helpers.php';
@@ -27,7 +25,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => [__DIR__ . '/pages', __DIR__ . '/includes'],
 ));
 
-$app['base_url'] = 'http://deployer.org';
+$app['base_url'] = '//deployer.org';
 
 // Set path for pages.
 $app['pages.path'] = __DIR__ . '/pages';
@@ -69,6 +67,11 @@ $app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, b
 if (php_sapi_name() == "cli") {
     require __DIR__ . '/cli.php';
 } else {
+    $filename = __DIR__ . preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
+    if (php_sapi_name() === 'cli-server' && is_file($filename)) {
+        return false;
+    }
+
     if ($app['cache']) {
         $app['http_cache']->run();
     } else {

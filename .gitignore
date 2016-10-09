@@ -1,9 +1,10 @@
-vendor/
-cache/
-releases/
-_documentation/
-_recipes/
-.idea/
-logs/
+/vendor/
+/cache/
+/releases/
+/node_modules/
+/_documentation/
+/_recipes/
+.idea
+/logs/
 .htaccess
 config.ini
