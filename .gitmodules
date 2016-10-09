@@ -1,6 +1,6 @@
-[submodule "documentation"]
-	path = "_documentation"
+[submodule "docs"]
+	path = "/repos/docs"
 	url = https://github.com/deployphp/docs.git
 [submodule "recipes"]
-    path = "_recipes"
+    path = "/repos/recipes"
     url = https://github.com/deployphp/recipes.git

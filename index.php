@@ -22,19 +22,19 @@ $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
     'http_cache.esi' => null,
 ));
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => [__DIR__ . '/pages', __DIR__ . '/includes'],
+    'twig.path' => [__DIR__ . '/src/pages', __DIR__ . '/includes'],
 ));
 
 $app['base_url'] = '//deployer.org';
 
 // Set path for pages.
-$app['pages.path'] = __DIR__ . '/pages';
+$app['pages.path'] = __DIR__ . '/src/pages';
 
 // Set path for docs local repository.
-$app['docs.path'] = __DIR__ . '/_documentation';
+$app['docs.path'] = __DIR__ . '/repos/docs';
 
 // Set path for recipes local repository.
-$app['recipes.path'] = __DIR__ . '/_recipes';
+$app['recipes.path'] = __DIR__ . '/repos/recipes';
 
 // Set path for releases.
 $app['releases.path'] = __DIR__ . '/releases';
@@ -51,12 +51,12 @@ $app['schedule'] = __DIR__ . '/logs/schedule.log';
 #########################
 
 
-$app->mount('/', include __DIR__ . '/controllers/update.php');
-$app->mount('/', include __DIR__ . '/controllers/docs.php');
-$app->mount('/', include __DIR__ . '/controllers/recipes.php');
-$app->mount('/', include __DIR__ . '/controllers/download.php');
-$app->mount('/', include __DIR__ . '/controllers/sitemap.php');
-$app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, because match everything.
+$app->mount('/', include __DIR__ . '/src/controllers/update.php');
+$app->mount('/', include __DIR__ . '/src/controllers/docs.php');
+$app->mount('/', include __DIR__ . '/src/controllers/recipes.php');
+$app->mount('/', include __DIR__ . '/src/controllers/download.php');
+$app->mount('/', include __DIR__ . '/src/controllers/sitemap.php');
+$app->mount('/', include __DIR__ . '/src/controllers/pages.php'); // Must be last, because match everything.
 
 
 #########################
@@ -67,7 +67,7 @@ $app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, b
 if (php_sapi_name() == "cli") {
     require __DIR__ . '/cli.php';
 } else {
-    $filename = __DIR__ . preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
+    $filename = __DIR__ . '/public/' . preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
     if (php_sapi_name() === 'cli-server' && is_file($filename)) {
         return false;
     }
