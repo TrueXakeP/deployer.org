@@ -22,7 +22,7 @@ $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
     'http_cache.esi' => null,
 ));
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => [__DIR__ . '/src/pages', __DIR__ . '/includes'],
+    'twig.path' => [__DIR__ . '/src/pages', __DIR__ . '/src/includes'],
 ));
 
 $app['base_url'] = '//deployer.org';

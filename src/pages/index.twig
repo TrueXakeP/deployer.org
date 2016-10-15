@@ -1,25 +1,18 @@
 {% extends 'layout.twig' %}
 
 {% set title = 'Deployment Tool for PHP' %}
+{% set header = '-home' %}
 
 {% block header %}
     <div class="terminal">
-        <div class="toolbar">
-            <i class="x"></i>
-            <i class="minus"></i>
-            <i class="plus"></i>
-            <img src="/assets/img/home.png" alt="">TryDeployer &mdash; 800x300
-        </div>
-        <div class="code">
-            <div class="console">Press enter to submit commands.<br></div>
-            <form id="console">
-                <label for="input">$</label>
-
-                <div class="input">
-                    <input type="text" value="" tabindex="1">
-                </div>
-            </form>
-        </div>
+        <i class="x"></i>
+        <i class="minus"></i>
+        <i class="plus"></i>
+        <div class="log">Press enter to submit commands.</div>
+        <form>
+            <label for="input">&gt;</label>
+            <input id="input" type="text" value="" tabindex="1" autocomplete="off">
+        </form>
     </div>
 {% endblock %}
 
@@ -33,7 +26,8 @@
                         <em>Deployer</em> is a deployment tool written in PHP.
                     </div>
                     <div class="download">
-                        <a href="/deployer.phar" onclick="ga('send', 'event', 'button', 'download', 'index');" class="btn btn-danger btn-lg">Download deployer.phar ({{ latest_deployer_version }})</a>
+                        <a href="/deployer.phar" onclick="ga('send', 'event', 'button', 'download', 'index');"
+                           class="btn btn-danger btn-lg">Download deployer.phar ({{ latest_deployer_version }})</a>
                     </div>
                     <a href="/download" class="download-link">or download a different version</a>
                     <div class="next">
@@ -45,9 +39,17 @@
                     </div>
                     {% include 'installation.twig' with {type: 'composer'} %}
                     <div class="next">
-                        <a class="github-button" href="https://github.com/deployphp/deployer" data-style="mega" data-count-href="/deployphp/deployer/stargazers" data-count-api="/repos/deployphp/deployer#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star deployphp/deployer on GitHub">Star</a>
+                        <a class="github-button" href="https://github.com/deployphp/deployer" data-style="mega"
+                           data-count-href="/deployphp/deployer/stargazers"
+                           data-count-api="/repos/deployphp/deployer#stargazers_count"
+                           data-count-aria-label="# stargazers on GitHub"
+                           aria-label="Star deployphp/deployer on GitHub">Star</a>
                         &nbsp;&nbsp;&nbsp;
-                        <a class="github-button" href="https://github.com/deployphp/deployer/fork" data-style="mega" data-count-href="/deployphp/deployer/network" data-count-api="/repos/deployphp/deployer#forks_count" data-count-aria-label="# forks on GitHub" aria-label="Fork deployphp/deployer on GitHub">Fork</a>
+                        <a class="github-button" href="https://github.com/deployphp/deployer/fork" data-style="mega"
+                           data-count-href="/deployphp/deployer/network"
+                           data-count-api="/repos/deployphp/deployer#forks_count"
+                           data-count-aria-label="# forks on GitHub"
+                           aria-label="Fork deployphp/deployer on GitHub">Fork</a>
                     </div>
                 </div>
                 <div class="col-md-6">

@@ -1,0 +1,76 @@
+.terminal {
+  position: relative;
+  background: #000;
+  color: #fff;
+  width: 700px;
+  height: 400px;
+  margin: 30px auto;
+  border-radius: 10px;
+  border: 2px solid #E91E63;
+  padding: 22px;
+  cursor: text;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+
+  .log {
+    margin-top: 20px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+
+    label {
+      margin-right: 5px;
+      font-family: serif;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: text;
+    }
+
+    #input {
+      width: 100%;
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.4;
+      border: none;
+      background: #000;
+      color: #fff;
+      outline: none;
+    }
+  }
+
+  i {
+    display: block;
+    position: absolute;
+    top: 18px;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    cursor: pointer;
+
+    &.x {
+      left: 20px;
+      background-color: #F0725E;
+    }
+
+    &.minus {
+      left: 40px;
+      background-color: #F8BD33;
+    }
+
+    &.plus {
+      left: 60px;
+      background-color: #5EC034;
+    }
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}

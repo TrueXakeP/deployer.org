@@ -6,3 +6,5 @@
 /repos/
 .idea
 config.ini
+bundle.js
+bundle.css

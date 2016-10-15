@@ -11,7 +11,7 @@ const shell = require('gulp-shell');
 const livereload = require('gulp-livereload');
 const path = require('path');
 
-const DIST = path.join(__dirname, 'dist');
+const DIST = path.join(__dirname, 'public');
 
 const AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -45,17 +45,13 @@ gulp.task('css', function () {
 gulp.task('watch', function () {
   livereload.listen();
   gulp.watch(['style/**/*.scss'], ['css']);
-  gulp.watch('_site/dist/bundle.css', livereload.changed);
+  gulp.watch('public/bundle.css', livereload.changed);
   return gulp.src('', {read: false})
     .pipe(shell('webpack -w'));
 });
 
 gulp.task('webpack', shell.task('webpack -p'));
 
-gulp.task('html', shell.task('jekyll build'));
-
-gulp.task('serve', shell.task('jekyll serve -b -I'));
-
 gulp.task('build', ['css', 'webpack', 'html']);
 
-gulp.task('default', ['css', 'serve', 'watch']);
+gulp.task('default', ['css', 'watch']);
