@@ -81,10 +81,11 @@ header {
   a {
     color: #fff;
     text-decoration: none;
+    transition: color 100ms ease-in-out;
   }
 
   a:hover {
-    color: #a3deef;
+    color: #52adff;
   }
 
   nav {
@@ -95,10 +96,21 @@ header {
 
     > .logo {
       margin-right: auto;
+      svg {
+        height: 22px;
+        vertical-align: bottom;
+        padding-right: 8px;
+        path {
+          transition: stroke 100ms ease-in-out;
+        }
+      }
+      &:hover svg path {
+        stroke: #52adff;
+      }
     }
 
     > * + * {
-      margin-left: 10px;
+      margin-left: 20px;
     }
   }
 }
