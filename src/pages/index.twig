@@ -8,7 +8,7 @@
 
     <h1>
         {#<img src="/images/deployer.svg" alt="Deployer">#}
-        Deployer &mdash; deployment tool for PHP
+        Deployer &mdash; Deployment tool for PHP
     </h1>
 
     <div class="terminal">
@@ -21,63 +21,99 @@
             <input id="input" type="text" value="" tabindex="1" autocomplete="off">
         </form>
     </div>
+
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=deployerorg" id="_carbonads_js"></script>
 {% endblock %}
 
 {% block section %}
-    <section class="features">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2>What is Deployer?</h2>
-                    <div class="lead">
-                        <em>Deployer</em> is a deployment tool written in PHP.
-                    </div>
-                    <div class="download">
-                        <a href="/deployer.phar" onclick="ga('send', 'event', 'button', 'download', 'index');"
-                           class="btn btn-danger btn-lg">Download deployer.phar ({{ latest_deployer_version }})</a>
-                    </div>
+    <section class="getting-started">
+        <h2>Getting Started</h2>
+        <div class="grid">
+            <div class="cell">
+                <p>
+                    &nbsp;
+                </p>
+                <p class="download">
+                    <a href="/deployer.phar" onclick="ga('send', 'event', 'button', 'download', 'index');"
+                       class="button">Download deployer.phar ({{ latest_deployer_version }})</a>
+                    <br>
                     <a href="/download" class="download-link">or download a different version</a>
-                    <div class="next">
-                        And run the following commands in the console:
-                    </div>
-                    {% include 'installation.twig' %}
-                    <div class="next">
-                        Or you can install it with composer:
-                    </div>
-                    {% include 'installation.twig' with {type: 'composer'} %}
-                    <div class="next">
-                        <a class="github-button" href="https://github.com/deployphp/deployer" data-style="mega"
-                           data-count-href="/deployphp/deployer/stargazers"
-                           data-count-api="/repos/deployphp/deployer#stargazers_count"
-                           data-count-aria-label="# stargazers on GitHub"
-                           aria-label="Star deployphp/deployer on GitHub">Star</a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a class="github-button" href="https://github.com/deployphp/deployer/fork" data-style="mega"
-                           data-count-href="/deployphp/deployer/network"
-                           data-count-api="/repos/deployphp/deployer#forks_count"
-                           data-count-aria-label="# forks on GitHub"
-                           aria-label="Fork deployphp/deployer on GitHub">Fork</a>
-                    </div>
+                </p>
+                <div class="github-stars">
+                    <a class="github-button" href="https://github.com/deployphp/deployer" data-style="mega"
+                       data-count-href="/deployphp/deployer/stargazers"
+                       data-count-api="/repos/deployphp/deployer#stargazers_count"
+                       data-count-aria-label="# stargazers on GitHub"
+                       aria-label="Star deployphp/deployer on GitHub">Star</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a class="github-button" href="https://github.com/deployphp/deployer/fork" data-style="mega"
+                       data-count-href="/deployphp/deployer/network"
+                       data-count-api="/repos/deployphp/deployer#forks_count"
+                       data-count-aria-label="# forks on GitHub"
+                       aria-label="Fork deployphp/deployer on GitHub">Fork</a>
                 </div>
-                <div class="col-md-6">
-                    <h2>Deployer Features</h2>
-                    <ul>
-                        <li><img src="/assets/icons/fast.png"><strong>Fast</strong> Deployer is packed with time-saving features and optimisations, best for performance and development.</li>
-                        <li><img src="/assets/icons/modular.png"><strong>Modular</strong> Create your own deployment script based on our modular blocks called "recipes". You can find common recipes <a href="https://github.com/deployphp/deployer/tree/master/recipe">here</a> and 3rd party ones <a href="https://github.com/deployphp/recipes">here</a>.</li>
-                        <li><img src="/assets/icons/cleancode.png"><strong>Clean code</strong> Deployer has very clean and well tested code. The repository is watched by many code quality tools, and every pull request is also checked by QA tools.</li>
-                        <li><img src="/assets/icons/rollback.png"><strong>Rollbacks</strong> If something is wrong, a simple rollback to the previous release is possible.</li>
-                        <li><img src="/assets/icons/atomic.png"><strong>Atomic deploys</strong> Prepare codebase, warm cache, do other stuff, and then deploy them with symlinks!</li>
-                        <li><img src="/assets/icons/parallel.png"><strong>Parallel tasks</strong> Deployer can run tasks in parallel, no other extension is required!</li>
-                        <li><img src="/assets/icons/consistency.png"><strong>Consistency</strong> Deployer keeps consistency between servers, even in parallel mode! If one task fails, subsequent tasks will not be executed on all servers.</li>
-                    </ul>
-                </div>
+            </div>
+            <div class="cell">
+                <p>
+                    Run the following commands in the console:
+                </p>
+                {% include 'installation.twig' %}
+                <p>
+                    Or you can install it with composer:
+                </p>
+                {% include 'installation.twig' with {type: 'composer'} %}
             </div>
         </div>
     </section>
 
-    <section class="getting-started">
-        <div class="container text-center">
-            <a class="btn btn-lg btn-primary" href="/docs">Getting Started</a>
+    <section class="features">
+        <h2>Deployer Features</h2>
+        <div class="grid -of3 -gutters">
+            <div class="cell">
+                <h3>Fast</h3>
+                <p>
+                    Deployer is packed with time-saving features and optimisations, best for performance and
+                    development.
+                </p>
+            </div>
+            <div class="cell">
+                <h3>Modular</h3>
+                <p>
+                    Create your own deployment script based on our modular blocks called "recipes".</p>
+            </div>
+            <div class="cell">
+                <h3>Clean code</h3>
+                <p>
+                    Deployer has very clean and well tested code. The repository is watched by many code quality tools, and
+                    every pull request is also checked by QA tools.
+                </p>
+            </div>
+            <div class="cell">
+                <h3>Rollbacks</h3>
+                <p>
+                    If something is wrong, a simple rollback to the previous release is possible.
+                </p>
+            </div>
+            <div class="cell">
+                <h3>Atomic deploys</h3>
+                <p>
+                    Prepare codebase, warm cache, do other stuff, and then deploy them with symlinks!
+                </p>
+            </div>
+            <div class="cell">
+                <h3>Parallel tasks</h3>
+                <p>
+                    Deployer can run tasks in parallel, no other extension is required!
+                </p>
+            </div>
+            <div class="cell">
+                <h3>Consistency</h3>
+                <p>
+                    Deployer keeps consistency between servers, even in parallel mode! If one task fails, subsequent
+                    tasks
+                    will not be executed on all servers.
+                </p>
+            </div>
         </div>
     </section>
 
@@ -100,19 +136,22 @@
                             <a href="http://www.stickermule.com/marketplace/11261-deployer" target="_blank">
                                 <img src="/assets/img/deployer-sticker.png" alt="Deployer Sticker">
                             </a>
-                            <a class="btn sticker-buy" href="http://www.stickermule.com/marketplace/11261-deployer" target="_blank">Buy $4.64</a>
+                            <a class="btn sticker-buy" href="http://www.stickermule.com/marketplace/11261-deployer"
+                               target="_blank">Buy $4.64</a>
                         </div>
                         <div class="sticker">
                             <a href="https://www.stickermule.com/marketplace/11262-deployer" target="_blank">
                                 <img src="/assets/img/deployer-sticker-grey.png" alt="Deployer Sticker">
                             </a>
-                            <a class="btn sticker-buy" href="https://www.stickermule.com/marketplace/11262-deployer" target="_blank">Buy $4.65</a>
+                            <a class="btn sticker-buy" href="https://www.stickermule.com/marketplace/11262-deployer"
+                               target="_blank">Buy $4.65</a>
                         </div>
                         <div class="sticker">
                             <a href="https://www.stickermule.com/marketplace/11496-php7" target="_blank">
                                 <img src="/assets/img/php7-sticker.png" alt="PHP7 Sticker" style="height: 70px;">
                             </a>
-                            <a class="btn sticker-buy" href="https://www.stickermule.com/marketplace/11496-php7" target="_blank">Buy $4.10</a>
+                            <a class="btn sticker-buy" href="https://www.stickermule.com/marketplace/11496-php7"
+                               target="_blank">Buy $4.10</a>
                         </div>
                     </div>
 
@@ -122,13 +161,56 @@
     </section>
 
     <section class="twitter">
-        <div class="twit"><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="http://t.co/w4Y9FTEebv">http://t.co/w4Y9FTEebv</a>: Deployment tool for <a href="https://twitter.com/hashtag/PHP?src=hash">#PHP</a> projects. It includes recipes for popular frameworks like <a href="https://twitter.com/hashtag/Symfony?src=hash">#Symfony</a>, <a href="https://twitter.com/hashtag/Laravel?src=hash">#Laravel</a>, <a href="https://twitter.com/hashtag/ZF?src=hash">#ZF</a> and more</p>&mdash; ServerGrove Networks (@servergrove) <a href="https://twitter.com/servergrove/status/626318503809826816">29 July 2015</a></blockquote></div>
-        <div class="twit"><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/PHP?src=hash">#PHP</a> <a href="https://twitter.com/hashtag/Deployer?src=hash">#Deployer</a> saved me weeks of work on a deployment software 4 a <a href="https://twitter.com/hashtag/CakePHP?src=hash">#CakePHP</a> app. Thx to all project contributors (<a href="http://t.co/41fjMAg08D">http://t.co/41fjMAg08D</a>)</p>&mdash; Ayman R. Bedair (@aymanrb) <a href="https://twitter.com/aymanrb/status/620650148947996677">13 July 2015</a></blockquote></div>
-        <div class="twit"><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Deployer: A php version of Capistrano <a href="http://t.co/tfY4ED3tri">http://t.co/tfY4ED3tri</a></p>&mdash; SergeiF (@SergeiFilippov) <a href="https://twitter.com/SergeiFilippov/status/612794783086477312">22 June 2015</a></blockquote></div>
-        <div class="twit"><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Deployer, a deployment tool for PHP. Happy user here! <a href="http://t.co/MrYvDqVnOF">http://t.co/MrYvDqVnOF</a></p>&mdash; Danny van Kooten (@DannyvanKooten) <a href="https://twitter.com/DannyvanKooten/status/603129566027259904">26 May 2015</a></blockquote></div>
-        <div class="twit"><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">A deployment tool written in PHP with support for popular frameworks out of the box <a href="http://t.co/wGJijgtVgp">http://t.co/wGJijgtVgp</a> via <a href="https://twitter.com/antonmedv">@antonmedv</a></p>&mdash; Julian Xhokaxhiu (@JulianXhokaxhiu) <a href="https://twitter.com/JulianXhokaxhiu/status/640263398526201856">5 September 2015</a></blockquote></div>
-        <div class="twit"><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Deployer - Awesome way to create PHP &quot;recipes&quot; using common frameworks <a href="https://t.co/dIBrn2hnju">https://t.co/dIBrn2hnju</a></p>&mdash; Developer Steve (@DeveloperSteve) <a href="https://twitter.com/DeveloperSteve/status/690797883596013569">23 January 2016</a></blockquote></div>
-        <div class="twit"><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Started to use <a href="https://t.co/slXkg2lC7o">https://t.co/slXkg2lC7o</a> for website deployments. Pretty easy to use but very powerful in the end. Like it!</p>&mdash; Tobias Wollender (@chapi) <a href="https://twitter.com/chapi/status/698579125531967489">13 February 2016</a></blockquote></div>
+        <div class="twit">
+            <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="http://t.co/w4Y9FTEebv">http://t.co/w4Y9FTEebv</a>:
+                    Deployment tool for <a href="https://twitter.com/hashtag/PHP?src=hash">#PHP</a> projects. It
+                    includes recipes for popular frameworks like <a href="https://twitter.com/hashtag/Symfony?src=hash">#Symfony</a>,
+                    <a href="https://twitter.com/hashtag/Laravel?src=hash">#Laravel</a>, <a
+                            href="https://twitter.com/hashtag/ZF?src=hash">#ZF</a> and more</p>&mdash; ServerGrove
+                Networks (@servergrove) <a href="https://twitter.com/servergrove/status/626318503809826816">29 July
+                    2015</a></blockquote>
+        </div>
+        <div class="twit">
+            <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a
+                            href="https://twitter.com/hashtag/PHP?src=hash">#PHP</a> <a
+                            href="https://twitter.com/hashtag/Deployer?src=hash">#Deployer</a> saved me weeks of work on
+                    a deployment software 4 a <a href="https://twitter.com/hashtag/CakePHP?src=hash">#CakePHP</a> app.
+                    Thx to all project contributors (<a href="http://t.co/41fjMAg08D">http://t.co/41fjMAg08D</a>)</p>&mdash;
+                Ayman R. Bedair (@aymanrb) <a href="https://twitter.com/aymanrb/status/620650148947996677">13 July
+                    2015</a></blockquote>
+        </div>
+        <div class="twit">
+            <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Deployer: A php version of
+                    Capistrano <a href="http://t.co/tfY4ED3tri">http://t.co/tfY4ED3tri</a></p>&mdash; SergeiF
+                (@SergeiFilippov) <a href="https://twitter.com/SergeiFilippov/status/612794783086477312">22 June
+                    2015</a></blockquote>
+        </div>
+        <div class="twit">
+            <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Deployer, a deployment tool for PHP.
+                    Happy user here! <a href="http://t.co/MrYvDqVnOF">http://t.co/MrYvDqVnOF</a></p>&mdash; Danny van
+                Kooten (@DannyvanKooten) <a href="https://twitter.com/DannyvanKooten/status/603129566027259904">26 May
+                    2015</a></blockquote>
+        </div>
+        <div class="twit">
+            <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">A deployment tool written in PHP
+                    with support for popular frameworks out of the box <a href="http://t.co/wGJijgtVgp">http://t.co/wGJijgtVgp</a>
+                    via <a href="https://twitter.com/antonmedv">@antonmedv</a></p>&mdash; Julian Xhokaxhiu
+                (@JulianXhokaxhiu) <a href="https://twitter.com/JulianXhokaxhiu/status/640263398526201856">5 September
+                    2015</a></blockquote>
+        </div>
+        <div class="twit">
+            <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Deployer - Awesome way to create PHP
+                    &quot;recipes&quot; using common frameworks <a href="https://t.co/dIBrn2hnju">https://t.co/dIBrn2hnju</a>
+                </p>&mdash; Developer Steve (@DeveloperSteve) <a
+                        href="https://twitter.com/DeveloperSteve/status/690797883596013569">23 January 2016</a>
+            </blockquote>
+        </div>
+        <div class="twit">
+            <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Started to use <a
+                            href="https://t.co/slXkg2lC7o">https://t.co/slXkg2lC7o</a> for website deployments. Pretty
+                    easy to use but very powerful in the end. Like it!</p>&mdash; Tobias Wollender (@chapi) <a
+                        href="https://twitter.com/chapi/status/698579125531967489">13 February 2016</a></blockquote>
+        </div>
     </section>
 
 {% endblock %}

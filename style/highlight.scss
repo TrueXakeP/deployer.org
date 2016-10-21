@@ -1,0 +1,17 @@
+code {
+  font-family: monospace;
+  background-color: #282828;
+  border-radius: 3px;
+  color: #fff;
+  padding: 1px 3px;
+}
+
+.hljs,
+pre > code {
+  display: block;
+  overflow-x: auto;
+  background: #282828;
+  border-radius: 3px;
+  color: #fff;
+  padding: 20px 26px;
+}

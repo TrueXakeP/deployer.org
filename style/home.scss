@@ -5,18 +5,36 @@ header.-home {
     position: relative;
     padding: 50px 0 100px;
   }
+}
 
-  h1 {
-    color: #fff;
-    font-size: 44px;
-    font-weight: 300;
-    margin: 0 0 80px;
+.getting-started {
+  @include content;
+
+  h2 {
+    font-size: 38px;
     text-align: center;
+  }
 
-    img {
-      height: 50px;
-      vertical-align: middle;
-      margin-right: 20px;
-    }
+  .download {
+    text-align: center;
+  }
+
+  .download-link {
+    display: inline-block;
+    margin-top: 5px;
+  }
+
+  .github-stars {
+    text-align: center;
+    margin-top: 30px;
+  }
+}
+
+.features {
+  @include content;
+
+  h2 {
+    font-size: 38px;
+    text-align: center;
   }
 }

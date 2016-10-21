@@ -26,7 +26,7 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   color: #000000;
-  font-weight: bold;
+  font-weight: 300;
 }
 
 h1 {
@@ -35,13 +35,13 @@ h1 {
 }
 
 h2 {
-  font-size: 28px;
+  font-size: 34px;
   margin-top: 50px;
   margin-bottom: 30px;
 }
 
 h3 {
-  font-size: 28px;
+  font-size: 30px;
   margin-bottom: 20px;
 }
 
@@ -66,14 +66,6 @@ blockquote {
   border-left: solid 4px #3D3D3D;
 }
 
-code {
-  font-family: 'Roboto Mono', monospace;
-  background-color: #282828;
-  border-radius: 3px;
-  color: #fff;
-  padding: 1px 3px;
-}
-
 header {
   background: #4183c4;
   color: #fff;
@@ -86,6 +78,21 @@ header {
 
   a:hover {
     color: #52adff;
+  }
+
+  h1 {
+    color: #fff;
+    font-size: 44px;
+    font-weight: 300;
+    margin: 0 0 80px;
+    text-align: center;
+    text-shadow: 2px 2px #1476A2;
+
+    img {
+      height: 50px;
+      vertical-align: middle;
+      margin-right: 20px;
+    }
   }
 
   nav {
@@ -115,10 +122,14 @@ header {
   }
 }
 
-.container {
+@mixin content {
   max-width: 980px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.container {
+  @include content;
 }
 
 footer {
@@ -173,5 +184,18 @@ footer {
     @include mobile {
       display: none;
     }
+  }
+}
+
+.button {
+  display: inline-block;
+  background: #e91e63;
+  border-radius: 10px;
+  color: #fff;
+  padding: 10px 15px;
+  text-decoration: none;
+  &:hover {
+    color: #fff;
+    background: #f91f69;
   }
 }

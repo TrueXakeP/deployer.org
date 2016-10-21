@@ -1,0 +1,95 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .cell {
+    flex: 1;
+
+    &.-auto-size {
+      flex: none;
+    }
+  }
+
+  &.-gutters {
+    margin: -1em 0 0 -1em;
+  }
+
+  &.-gutters > .cell {
+    padding: 1em 0 0 1em;
+  }
+
+  &.-fit > .cell {
+    flex: 1;
+  }
+
+  &.-full > .cell {
+    flex: 0 0 100%;
+  }
+
+  &.-of2 > .cell {
+    flex: 0 0 50%;
+  }
+
+  &.-of3 > .cell {
+    flex: 0 0 33.3333%;
+  }
+
+  &.-of4 > .cell {
+    flex: 0 0 25%;
+  }
+
+  @include mobile {
+    &.-fit > .cell {
+      flex: 1;
+    }
+    &.-full > .cell {
+      flex: 0 0 100%;
+    }
+    &.-of2 > .cell {
+      flex: 0 0 50%;
+    }
+    &.-of3 > .cell {
+      flex: 0 0 33.3333%;
+    }
+    &.-of4 > .cell {
+      flex: 0 0 25%;
+    }
+  }
+
+  @include tablet {
+    &.-fit > .cell {
+      flex: 1;
+    }
+    &.-full > .cell {
+      flex: 0 0 100%;
+    }
+    &.-of2 > .cell {
+      flex: 0 0 50%;
+    }
+    &.-of3 > .cell {
+      flex: 0 0 33.3333%;
+    }
+    &.-of4 > .cell {
+      flex: 0 0 25%;
+    }
+  }
+
+  @include wide {
+    &.-fit > .cell {
+      flex: 1;
+    }
+    &.-full > .cell {
+      flex: 0 0 100%;
+    }
+    &.-of2 > .cell {
+      flex: 0 0 50%;
+    }
+    &.-of3 > .cell {
+      flex: 0 0 33.3333%;
+    }
+    &.-of4 > .cell {
+      flex: 0 0 25%;
+    }
+  }
+}
