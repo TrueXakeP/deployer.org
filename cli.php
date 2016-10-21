@@ -76,7 +76,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
             $newPharManifest = [
                 'name' => 'deployer.phar',
                 'sha1' => sha1_file("$dir/deployer.phar"),
-                'url' => "http://deployer.org/releases/$tag/deployer.phar",
+                'url' => "https://deployer.org/releases/$tag/deployer.phar",
                 'version' => $version, 
             ];
 

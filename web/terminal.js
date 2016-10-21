@@ -159,7 +159,7 @@ function php() {
 
 function tit() {
   return [
-    '<img src="http://deployer.org/tit.gif" alt="">\n',
+    '<img src="https://deployer.org/tit.gif" alt="">\n',
     ''
   ];
 }
