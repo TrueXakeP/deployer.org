@@ -12,8 +12,17 @@
   -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: auto;
 
-  .log {
+  @include mobile {
+    display: none;
+  }
+
+  .scroll {
     margin-top: 20px;
+    overflow: hidden;
+    height: calc(100% - 20px);
+  }
+
+  .log {
     font-family: monospace;
     font-size: 14px;
     line-height: 1.4;
@@ -23,13 +32,11 @@
   form {
     display: flex;
     align-items: center;
-    margin-top: 5px;
 
     label {
-      margin-right: 5px;
-      font-family: serif;
+      margin-right: 8px;
+      font-family: monospace;
       font-size: 14px;
-      font-weight: bold;
       cursor: text;
     }
 
@@ -45,7 +52,7 @@
     }
   }
 
-  i {
+  .ext {
     display: block;
     position: absolute;
     top: 18px;
@@ -72,5 +79,14 @@
     &:hover {
       opacity: 0.5;
     }
+  }
+
+  b {
+    color: #2FDB2F;
+    font-weight: normal;
+  }
+
+  img {
+    height: 250px;
   }
 }

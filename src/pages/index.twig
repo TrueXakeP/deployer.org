@@ -4,7 +4,7 @@
 {% set header = '-home' %}
 
 {% block header %}
-    <a class="github-ribbon" href="http://url.to-your.repo" title="Fork me on GitHub">Fork me on GitHub</a>
+    <a class="github-ribbon" href="https://github.com/deployphp/deployer" title="Fork me on GitHub">Fork me on GitHub</a>
 
     <h1>
         {#<img src="/images/deployer.svg" alt="Deployer">#}
@@ -12,14 +12,16 @@
     </h1>
 
     <div class="terminal">
-        <i class="x"></i>
-        <i class="minus"></i>
-        <i class="plus"></i>
-        <div class="log">Press enter to submit commands.</div>
-        <form>
-            <label for="input">&gt;</label>
-            <input id="input" type="text" value="" tabindex="1" autocomplete="off">
-        </form>
+        <div class="ext x"></div>
+        <div class="ext minus"></div>
+        <div class="ext plus"></div>
+        <div class="scroll">
+            <div class="log">Press enter to submit commands.</div>
+            <form>
+                <label for="input">&gt;</label>
+                <input id="input" type="text" value="" tabindex="1" autocomplete="off">
+            </form>
+        </div>
     </div>
 {% endblock %}
 

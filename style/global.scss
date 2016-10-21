@@ -69,6 +69,11 @@ blockquote {
   margin-right: auto;
   margin-left: auto;
 
+  @include mobile {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
   @include tablet {
     margin-right: 20px;
     margin-left: 20px;
@@ -98,6 +103,11 @@ header {
     margin-right: 200px;
     text-shadow: 2px 2px #1476A2;
 
+    @include mobile {
+      font-size: 26px;
+      margin-right: 0;
+    }
+
     img {
       height: 50px;
       vertical-align: middle;
@@ -116,7 +126,7 @@ header {
       white-space: nowrap;
       svg {
         height: 22px;
-        vertical-align: bottom;
+        vertical-align: middle;
         padding-right: 8px;
         path {
           transition: stroke 100ms ease-in-out;
@@ -150,6 +160,10 @@ footer {
 
   .container {
     display: flex;
+
+    @include mobile {
+      flex-direction: column;
+    }
 
     .copy {
       margin-right: auto;

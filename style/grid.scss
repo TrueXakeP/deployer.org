@@ -5,6 +5,7 @@
 
   .cell {
     flex: 1;
+    max-width: 100%;
 
     &.-auto-size {
       flex: none;

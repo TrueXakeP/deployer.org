@@ -11,6 +11,10 @@ header.-home {
       margin: 0 0 80px;
       text-align: center;
     }
+
+    @include mobile {
+      padding: 150px 30px 20px;
+    }
   }
 }
 
