@@ -36,6 +36,7 @@ $controller->get('/docs/{page}', function ($page, Request $request) use ($app) {
     list($menu, $_) = parse_md(parse_links(file_get_contents($app['docs.path'] . '/README.md')));
 
     $response->setContent(render('docs.twig', [
+        'url' => url("/docs/$page"),
         'page' => $page,
         'title' => $title,
         'menu' => $menu,

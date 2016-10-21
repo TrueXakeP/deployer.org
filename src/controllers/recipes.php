@@ -57,6 +57,7 @@ $controller->get('/recipes/{page}', function ($page, Request $request) use ($app
     }
 
     $response->setContent(render('recipes.twig', [
+        'url' => url("/recipes/$page"),
         'title' => $title,
         'nav' => $nav,
         'content' => $body,

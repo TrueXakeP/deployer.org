@@ -25,7 +25,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => [__DIR__ . '/src/pages', __DIR__ . '/src/includes'],
 ));
 
-$app['base_url'] = '//deployer.org';
+$app['base_url'] = 'https://deployer.org';
 
 // Set path for pages.
 $app['pages.path'] = __DIR__ . '/src/pages';

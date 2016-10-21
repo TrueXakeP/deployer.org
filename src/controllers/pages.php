@@ -22,8 +22,11 @@ $controller->get('/{page}', function (Request $request, $page) use ($app) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    $templateParams = [];
+    $templateParams = [
+        'url' => url("/$page")
+    ];
     if ($page === 'index') {
+        $templateParams['url'] = url("");
         $manifestFile = new SplFileInfo($app['releases.path'] . '/manifest.json');
 
         // Getting the latest stable release

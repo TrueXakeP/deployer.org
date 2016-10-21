@@ -123,6 +123,7 @@ $controller->get('/download', function (Request $request) use ($app) {
     $response->setContent(
     // I couldn't get myself to use that `render()` function... ><
         $app['twig']->render('download.twig', [
+                'url' => url('/download'),
                 'manifest_data' => $manifestData,
             ]
         ));

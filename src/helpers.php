@@ -31,6 +31,15 @@ function request()
 }
 
 /**
+ * @param string $path
+ * @return string
+ */
+function url($path) {
+    global $app; // What? :)
+    return $app['base_url'] . $path;
+}
+
+/**
  * Parse markdown test into html and title.
  *
  * @param string $content
