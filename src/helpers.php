@@ -47,6 +47,9 @@ function parse_md($content)
     // Get title from first header.
     if (preg_match('/#\s*(.*)/u', $content, $matches)) {
         $title = $matches[1];
+
+        // Drop title.
+        $content = preg_replace('/#\s*(.*)/u', '', $content, 1);
     } else {
         $title = '';
     }

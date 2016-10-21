@@ -3,42 +3,34 @@
 {% set title = 'Download' %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+    {% if manifest_data is null %}
+        <p>-</p>
+    {% else %}
+        {% for version_data in manifest_data %}
+            <div>
+                {% if version_data.highlighted %}
+                    <h3>
+                        <strong>
+                            Deployer {{ version_data.version }}
+                        </strong>
+                    </h3>
+                {% else %}
+                    <h3>
+                        Deployer {{ version_data.version }}
+                    </h3>
+                {% endif %}
 
-            <h1>Download</h1>
-            <p>
-
-                In every major release, the latest stable version is highlighted.
-            </p>
-
-            <h3>Installation</h3>
-            <div class="row">
-                <div class="col-sm-12 col-md-10">
-                    {% include 'installation.twig' %}
-                </div>
+                <a class="button" href="{{ version_data.url }}"
+                   onclick="ga('send', 'event', 'button', 'download', '{{ version_data.version }}');">
+                    Download deployer.phar ({{ version_data.version }})
+                </a>
+                <br>
+                {% if version_data.sha1 %}
+                <p>
+                    SHA1: <code>{{ version_data.sha1 }}</code>
+                </p>
+                {% endif %}
             </div>
-            <p>or</p>
-            <div class="row">
-                <div class="col-sm-12 col-md-10">
-                    {% include 'installation.twig' with {type: 'composer', version: '<version>'} %}
-                </div>
-            </div>
-
-            <h3>Phar downloads</h3>
-            {% if manifest_data is null %}
-                <p>-</p>
-            {% else %}
-                <ul class="download-list">
-                    {% for version_data in manifest_data %}
-                        {% if version_data.highlighted %}
-                            <li><span class="highlighted"><a href="{{ version_data.url }}" onclick="ga('send', 'event', 'button', 'download', '{{ version_data.version }}');">{{ version_data.version }}</a></span></li>
-                        {% else %}
-                            <li><a href="{{ version_data.url }}" onclick="ga('send', 'event', 'button', 'download', '{{ version_data.version }}');">{{ version_data.version }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-    </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

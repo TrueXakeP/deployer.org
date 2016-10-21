@@ -15,11 +15,11 @@ body {
 }
 
 a {
-  color: #d42626;
+  color: #e91e63;
   text-decoration: underline;
 
   &:hover {
-    color: #91170a;
+    color: #911844;
     text-decoration: none;
   }
 }
@@ -53,11 +53,9 @@ p {
 
 ul {
   padding: 0;
-  list-style-position: inside;
-
-  li {
-    margin-bottom: 10px;
-  }
+  line-height: 1.5rem;
+  list-style: disc;
+  margin: 0 0 1rem 3rem;
 }
 
 blockquote {
@@ -66,7 +64,19 @@ blockquote {
   border-left: solid 4px #3D3D3D;
 }
 
+@mixin content {
+  max-width: 980px;
+  margin-right: auto;
+  margin-left: auto;
+
+  @include tablet {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+}
+
 header {
+  position: relative;
   background: #4183c4;
   color: #fff;
 
@@ -84,8 +94,8 @@ header {
     color: #fff;
     font-size: 44px;
     font-weight: 300;
-    margin: 0 0 80px;
-    text-align: center;
+    margin: 0;
+    margin-right: 200px;
     text-shadow: 2px 2px #1476A2;
 
     img {
@@ -103,6 +113,7 @@ header {
 
     > .logo {
       margin-right: auto;
+      white-space: nowrap;
       svg {
         height: 22px;
         vertical-align: bottom;
@@ -120,12 +131,11 @@ header {
       margin-left: 20px;
     }
   }
-}
 
-@mixin content {
-  max-width: 980px;
-  margin-right: auto;
-  margin-left: auto;
+  .container {
+    padding-top: 40px;
+    padding-bottom: 50px;
+  }
 }
 
 .container {
@@ -133,18 +143,32 @@ header {
 }
 
 footer {
-  display: flex;
-
   margin-top: 47px;
-  margin-bottom: 57px;
+  padding: 50px 0;
+  background: #4183c4;
+  color: #fff;
+
+  .container {
+    display: flex;
+
+    .copy {
+      margin-right: auto;
+    }
+  }
 
   a {
     text-decoration: none;
+    color: #fff;
+    transition: color 100ms ease-in-out;
+    &:hover {
+      color: #52adff;
+      text-decoration: underline;
+    }
   }
 
   .with-love {
     margin-top: 0;
-    font-size: 19px;
+    font-size: 18px;
 
     @include mobile {
       margin-top: 25px;

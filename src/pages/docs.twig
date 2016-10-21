@@ -1,42 +1,21 @@
 {% extends 'layout.twig' %}
 
+{% block header %}
+    <h1>{{ title }}</h1>
+{% endblock %}
+
 {% block content %}
-    <div class="row">
-        <div class="col-md-2 visible-lg-block docs-nav">
+    <div class="docs">
+        <div class="nav">
             {{ menu|raw }}
             <small>
-                Found a typo? Is something wrong in this documentation?<br>
-                Just <a href="https://github.com/deployphp/docs/edit/master/{{ page }}.md">fork and edit</a> it!
+                <a href="https://github.com/deployphp/docs/edit/master/{{ page }}.md">Edit this page</a>
             </small>
         </div>
 
-        <div class="col-md-10">
+        <div class="page">
             {{ content|raw }}
             <div class="docs-bottom-nav"></div>
         </div>
     </div>
-{% endblock %}
-
-{% block script %}
-    <script>
-        $(function () {
-            var nav = $('.docs-nav > ul'),
-                current = nav.find('a[href^="' + location.pathname + '"]').eq(0).parents('li'),
-                next = current.next().find('a'),
-                prev = current.prev().find('a'),
-                links = [];
-
-            if (prev.length) {
-                links.push('← ' + prev[0].outerHTML);
-            }
-            
-            if (next.length) {
-                links.push(next[0].outerHTML + ' →');
-            }
-
-            $('.docs-bottom-nav').append(links.join(' &amp; '));
-
-            nav.addClass('nav nav-stacked');
-        });
-    </script>
 {% endblock %}

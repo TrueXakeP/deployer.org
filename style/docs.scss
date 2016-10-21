@@ -1,0 +1,31 @@
+.docs {
+  margin-top: 55px;
+
+  .nav {
+    float: left;
+    min-width: 200px;
+    font-size: 19px;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      line-height: 2rem;
+    }
+
+    @include tablet {
+      display: none;
+    }
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  .page {
+    margin-top: 15px;
+
+    @include desktop {
+      margin-left: 200px;
+    }
+  }
+}
