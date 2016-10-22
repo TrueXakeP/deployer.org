@@ -50,8 +50,34 @@ header.-home {
   }
 }
 
+.builtin {
+  @include content;
+
+  h2 {
+    font-size: 38px;
+    text-align: center;
+  }
+
+  .cell {
+    text-align: center;
+    align-self: center;
+  }
+
+  .cell > img {
+    max-width: 120px;
+    max-height: 120px;
+  }
+}
+
 .stickers {
   @include content;
+  margin-top: 100px;
+  margin-bottom: 100px;
+
+  h2 {
+    font-size: 38px;
+    text-align: center;
+  }
 
   .sticker {
     display: inline-block;
