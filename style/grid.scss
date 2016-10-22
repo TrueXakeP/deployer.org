@@ -41,21 +41,25 @@
   }
 
   @include mobile {
-    &.-fit > .cell {
-      flex: 1;
-    }
-    &.-full > .cell {
-      flex: 0 0 100%;
-    }
-    &.-of2 > .cell {
-      flex: 0 0 50%;
-    }
-    &.-of3 > .cell {
-      flex: 0 0 33.3333%;
-    }
-    &.-of4 > .cell {
-      flex: 0 0 25%;
-    }
+    // Fix for iPhones:
+    display: block;
+
+    // iOS10 has bugs with it.
+    //&.-fit > .cell {
+    //  flex: 1;
+    //}
+    //&.-full > .cell {
+    //  flex: 0 0 100%;
+    //}
+    //&.-of2 > .cell {
+    //  flex: 0 0 50%;
+    //}
+    //&.-of3 > .cell {
+    //  flex: 0 0 33.3333%;
+    //}
+    //&.-of4 > .cell {
+    //  flex: 0 0 25%;
+    //}
   }
 
   @include tablet {
