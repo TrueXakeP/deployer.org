@@ -167,7 +167,7 @@ function tit() {
 function girl() {
   const girls = ['girl_1.jpg', 'girl_32.gif', 'girl_55.jpg', 'girl_78.jpg', 'girl_10.gif', 'girl_33.jpg', 'girl_56.jpg', 'girl_79.jpg', 'girl_11.jpeg', 'girl_34.jpg', 'girl_57.jpg', 'girl_8.jpg', 'girl_12.jpg', 'girl_35.jpg', 'girl_58.jpg', 'girl_80.jpg', 'girl_13.jpg', 'girl_36.jpg', 'girl_59.jpg', 'girl_81.jpg', 'girl_14.jpeg', 'girl_37.jpg', 'girl_6.gif', 'girl_82.jpg', 'girl_15.jpg', 'girl_38.jpg', 'girl_60.gif', 'girl_83.jpg', 'girl_16.gif', 'girl_39.jpg', 'girl_61.jpg', 'girl_84.jpg', 'girl_17.jpg', 'girl_4.gif', 'girl_62.jpg', 'girl_85.jpg', 'girl_18.jpg', 'girl_40.jpg', 'girl_63.jpg', 'girl_86.jpg', 'girl_19.jpg', 'girl_41.jpg', 'girl_64.jpg', 'girl_87.png', 'girl_2.gif', 'girl_42.jpeg', 'girl_65.jpg', 'girl_88.jpg', 'girl_20.jpg', 'girl_43.jpg', 'girl_66.jpg', 'girl_89.jpg', 'girl_21.jpg', 'girl_44.png', 'girl_67.jpg', 'girl_9.jpg', 'girl_22.jpg', 'girl_45.jpg', 'girl_68.jpg', 'girl_90.jpg', 'girl_23.gif', 'girl_46.gif', 'girl_69.jpg', 'girl_91.png', 'girl_24.jpg', 'girl_47.jpg', 'girl_7.jpg', 'girl_92.jpg', 'girl_25.gif', 'girl_48.jpg', 'girl_70.jpg', 'girl_93.jpg', 'girl_26.png', 'girl_49.jpg', 'girl_71.jpg', 'girl_94.jpg', 'girl_27.jpg', 'girl_5.jpg', 'girl_72.jpg', 'girl_95.jpg', 'girl_28.jpg', 'girl_50.gif', 'girl_73.jpg', 'girl_96.jpg', 'girl_29.jpg', 'girl_51.jpg', 'girl_74.jpg', 'girl_97.jpg', 'girl_3.gif', 'girl_52.jpg', 'girl_75.gif', 'girl_98.jpg', 'girl_30.jpg', 'girl_53.jpg', 'girl_76.gif', 'girl_31.jpg', 'girl_54.jpg', 'girl_77.jpg',];
   return [
-    `<img src="https://deployer.org/assets/${girls[Math.floor(Math.random() * girls.length)]}" alt="girl">`,
+    `<img src="https://deployer.org/assets/girls/${girls[Math.floor(Math.random() * girls.length)]}" alt="girl">`,
     ``
   ];
 }
