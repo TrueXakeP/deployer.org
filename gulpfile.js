@@ -10,8 +10,10 @@ const watch = require('gulp-watch');
 const shell = require('gulp-shell');
 const livereload = require('gulp-livereload');
 const path = require('path');
+const RevAll = require('gulp-rev-all');
 
 const DIST = path.join(__dirname, 'public');
+const ROOT = __dirname;
 
 const AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -42,6 +44,7 @@ gulp.task('css', function () {
     .pipe(gulp.dest(DIST));
 });
 
+
 gulp.task('watch', function () {
   livereload.listen();
   gulp.watch(['style/**/*.scss'], ['css']);
@@ -52,6 +55,12 @@ gulp.task('watch', function () {
 
 gulp.task('webpack', shell.task('webpack -p'));
 
-gulp.task('build', ['css', 'webpack', 'html']);
+gulp.task('build', ['css', 'webpack'], () =>
+  gulp.src(`${DIST}/bundle.*`)
+    .pipe(RevAll.revision())
+    .pipe(gulp.dest(DIST))
+    .pipe(RevAll.manifestFile())
+    .pipe(gulp.dest(ROOT))
+);
 
 gulp.task('default', ['css', 'watch']);

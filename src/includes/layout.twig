@@ -21,7 +21,7 @@
     <meta name="twitter:image" content="https://deployer.org/images/opengraph.png">
     <link rel="canonical" href="{{ url }}">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/bundle.css">
+    <link rel="stylesheet" href="{{ asset('bundle.css') }}">
     <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
@@ -89,7 +89,7 @@
     </div>
 </footer>
 
-<script src="/bundle.js"></script>
+<script src="{{ asset('bundle.js') }}"></script>
 {% block script %}{% endblock %}
 <script type="text/javascript">
     (function (d, w, c) {

@@ -22,54 +22,20 @@ $controller->get('/{page}', function (Request $request, $page) use ($app) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
+    $response->setLastModified(new DateTime('@' . $templateFile->getMTime()));
+    if ($response->isNotModified($request)) {
+        return $response;
+    }
+
     $templateParams = [
         'url' => url("/$page")
     ];
-    if ($page === 'index') {
-        $templateParams['url'] = url("");
-        $manifestFile = new SplFileInfo($app['releases.path'] . '/manifest.json');
-
-        // Getting the latest stable release
-        $manifestData = json_decode(file_get_contents($manifestFile->getPathname()), true);
-
-        $stable = '';
-        $latest = new \Herrera\Version\Version();
-        $builder = new \Herrera\Version\Builder();
-
-        foreach ($manifestData as $versionData) {
-            $version = $builder->importString($versionData['version'])->getVersion();
-
-            if ($stable === '' && !$version->isStable()) {
-                continue;
-            }
-
-            if (\Herrera\Version\Comparator::isLessThan($latest, $version)) {
-                $latest = $version;
-            }
-        }
-
-        $templateParams['latest_deployer_version'] = $latest;
-
-        $templateLastModified = new DateTime('@' . $templateFile->getMTime());
-        $manifestLastModified = new DateTime('@' . $manifestFile->getMTime());
-
-        $response->setLastModified($templateLastModified > $manifestLastModified ? $templateLastModified : $manifestLastModified);
-        if ($response->isNotModified($request)) {
-            return $response;
-        }
-    } else {
-        $response->setLastModified(new DateTime('@' . $templateFile->getMTime()));
-        if ($response->isNotModified($request)) {
-            return $response;
-        }
-    }
 
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
     $response->setContent(render($page . '.twig', $templateParams));
 
     return $response;
-})
-    ->value('page', 'index');
+})->value('page', 'index');
 
 return $controller;

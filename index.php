@@ -17,13 +17,19 @@ require __DIR__ . '/src/helpers.php';
 $app = new Silex\Application(parse_ini_file(is_readable('config.ini') ? 'config.ini' : 'config.ini.dist'));
 
 // Register HTTP Cache and Twig
-$app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
-    'http_cache.cache_dir' => __DIR__ . '/cache/',
-    'http_cache.esi' => null,
-));
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => [__DIR__ . '/src/pages', __DIR__ . '/src/includes'],
 ));
+$app->extend('twig', function($twig, $app) {
+    $twig->addFunction(new \Twig_SimpleFunction('asset', function ($name) use ($app) {
+        if(empty($app['rev_manifest'])) {
+            return "/$name";
+        } else {
+            return "/" . $app['rev_manifest'][$name];
+        }
+    }));
+    return $twig;
+});
 
 $app['base_url'] = 'https://deployer.org';
 
@@ -45,6 +51,15 @@ $app['cli'] = __FILE__;
 // Set schedule file.
 $app['schedule'] = __DIR__ . '/logs/schedule.log';
 
+// Revision manifest
+$app['rev_manifest'] = function () {
+    $filename = __DIR__ . '/rev-manifest.json';
+    if (is_readable($filename)) {
+        return json_decode(file_get_contents($filename), true);
+    } else {
+        return [];
+    }
+};
 
 #########################
 #   Mount controller    #
@@ -56,6 +71,7 @@ $app->mount('/', include __DIR__ . '/src/controllers/docs.php');
 $app->mount('/', include __DIR__ . '/src/controllers/recipes.php');
 $app->mount('/', include __DIR__ . '/src/controllers/download.php');
 $app->mount('/', include __DIR__ . '/src/controllers/sitemap.php');
+$app->mount('/', include __DIR__ . '/src/controllers/index.php');
 $app->mount('/', include __DIR__ . '/src/controllers/pages.php'); // Must be last, because match everything.
 
 

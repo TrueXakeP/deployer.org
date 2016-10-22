@@ -1,10 +1,9 @@
 /vendor/
-/cache/
 /logs/
 /releases/
 /node_modules/
 /repos/
 .idea
 config.ini
-bundle.js
-bundle.css
+/public/bundle.*
+rev-manifest.json
