@@ -7,7 +7,8 @@ set('shared_files', ['config.ini']);
 set('shared_dirs', [
     'logs',
     'repos',
-    'releases'
+    'releases',
+    'public/assets'
 ]);
 set('writable_dirs', ['logs']);
 
