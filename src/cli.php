@@ -172,5 +172,3 @@ $scheduleCommand->setCode(function ($input, $output) use ($app) {
     file_put_contents($app['schedule'], implode("\n", $commands));
 });
 $console->add($scheduleCommand);
-
-$console->run();

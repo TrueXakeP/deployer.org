@@ -27,7 +27,7 @@ function request()
 {
     global $app; // I know what you say :)
                  // I do not care =)
-    return $app['request'];
+    return $app['request_context'];
 }
 
 /**
