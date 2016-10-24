@@ -6,7 +6,7 @@
  */
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../src/helpers.php';
+require __DIR__ . '/helpers.php';
 
 #########################
 #     Configuration     #
@@ -52,7 +52,7 @@ $app['recipes.path'] = __DIR__ . '/../repos/recipes';
 $app['releases.path'] = __DIR__ . '/../releases';
 
 // Set cli file.
-$app['cli'] = __FILE__;
+$app['cli'] = realpath(__DIR__ . '/../console');
 
 // Set schedule file.
 $app['schedule'] = __DIR__ . '/../logs/schedule.log';
