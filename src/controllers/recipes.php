@@ -29,7 +29,7 @@ $controller->get('/recipes/{page}', function ($page, Request $request) use ($app
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    $response->setLastModified(new DateTime('@' . $file->getMTime()));
+    $response->setLastModified(revisionTime([$file]));
     if ($response->isNotModified($request)) {
         return $response;
     }

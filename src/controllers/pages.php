@@ -22,7 +22,7 @@ $controller->get('/{page}', function (Request $request, $page) use ($app) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    $response->setLastModified(new DateTime('@' . $templateFile->getMTime()));
+    $response->setLastModified(revisionTime([$templateFile]));
     if ($response->isNotModified($request)) {
         return $response;
     }

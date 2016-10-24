@@ -78,3 +78,20 @@ function parse_md($content)
 function parse_links($content) {
     return preg_replace('/\((.*?)\.md\)/', '(' . request()->getBaseUrl() . '/docs/$1)', $content);
 }
+
+
+/**
+ * @param \SplFileInfo[] $files
+ * @return \DateTime
+ */
+function revisionTime($files) {
+    global $app;
+    $revFile = new SplFileInfo($app['rev_manifest.path']);
+    if ($revFile->isReadable()) {
+        $files[] = $revFile;
+    }
+
+    return min(array_map(function ($file) {
+        return new DateTime('@' . $file->getMTime());
+    }, $files));
+}

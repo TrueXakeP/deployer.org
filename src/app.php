@@ -58,8 +58,9 @@ $app['cli'] = realpath(__DIR__ . '/../console');
 $app['schedule'] = __DIR__ . '/../logs/schedule.log';
 
 // Revision manifest
-$app['rev_manifest'] = function () {
-    $filename = __DIR__ . '/../rev-manifest.json';
+$app['rev_manifest.path'] = __DIR__ . '/../rev-manifest.json';
+$app['rev_manifest'] = function () use ($app) {
+    $filename = $app['rev_manifest.path'];
     if (is_readable($filename)) {
         return json_decode(file_get_contents($filename), true);
     } else {
