@@ -35,8 +35,14 @@ $controller->get('/docs/{page}', function ($page, Request $request) use ($app) {
     // Get docs navigation from README.md
     list($menu, $_) = parse_md(parse_links(file_get_contents($app['docs.path'] . '/README.md')));
 
+    // Set correct url.
+    $canonical = url("/docs/$page");
+    if ($page === 'getting-started') {
+        $canonical = url("/docs");
+    }
+
     $response->setContent(render('docs.twig', [
-        'url' => url("/docs/$page"),
+        'url' => $canonical,
         'page' => $page,
         'title' => $title,
         'menu' => $menu,

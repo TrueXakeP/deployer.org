@@ -56,8 +56,14 @@ $controller->get('/recipes/{page}', function ($page, Request $request) use ($app
         ];
     }
 
+    // Set correct url.
+    $canonical = url("/recipes/$page");
+    if ($page === 'index') {
+        $canonical = url("/recipes");
+    }
+
     $response->setContent(render('recipes.twig', [
-        'url' => url("/recipes/$page"),
+        'url' => $canonical,
         'title' => $title,
         'nav' => $nav,
         'content' => $body,
