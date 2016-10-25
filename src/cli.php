@@ -165,7 +165,7 @@ $scheduleCommand->setCode(function ($input, $output) use ($app) {
             
             $process = new \Symfony\Component\Process\Process("php $app[cli] $command");
             $process->run();
-            file_put_contents(__DIR__ . '/logs/' . $command . '.log', $process->getOutput());
+            file_put_contents($app['logs.path'] . '/' . $command . '.log', $process->getOutput());
         }
     }
     

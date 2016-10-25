@@ -51,6 +51,9 @@ $app['recipes.path'] = __DIR__ . '/../repos/recipes';
 // Set path for releases.
 $app['releases.path'] = __DIR__ . '/../releases';
 
+// Logs path.
+$app['logs.path'] = __DIR__ . '/../logs';
+
 // Set cli file.
 $app['cli'] = realpath(__DIR__ . '/../console');
 
