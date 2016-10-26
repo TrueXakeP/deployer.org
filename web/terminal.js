@@ -11,6 +11,9 @@ const ok = `<svg width="14" height="14" viewBox="0 0 128 128" xmlns="http://www.
 
 export function init() {
   const terminalNode = document.querySelector('.terminal');
+  if (!terminalNode) {
+    return;
+  }
   const scrollNode = terminalNode.querySelector('.scroll');
   const logNode = terminalNode.querySelector('.log');
   const formNode = terminalNode.querySelector('form');
