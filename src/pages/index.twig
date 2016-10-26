@@ -3,6 +3,16 @@
 {% set title = 'Deployment Tool for PHP' %}
 {% set header = '-home' %}
 
+{% block head %}
+    <script>
+        if (window.navigator.userAgent.indexOf('Windows') != -1) {
+            document.documentElement.className = '-windows';
+        } else {
+            document.documentElement.className = '-macos';
+        }
+    </script>
+{% endblock %}
+
 {% block header %}
     <a class="github-ribbon" href="https://github.com/deployphp/deployer" title="Fork me on GitHub">Fork me on GitHub</a>
 
@@ -12,9 +22,18 @@
     </h1>
 
     <div class="terminal">
-        <div class="ext x"></div>
-        <div class="ext minus"></div>
-        <div class="ext plus"></div>
+        <div class="macos">
+            <div class="x"></div>
+            <div class="minus"></div>
+            <div class="plus"></div>
+        </div>
+        <div class="windows">
+            <div class="minimize"></div>
+            <div class="maximize"></div>
+            <div class="close">
+                <svg width="13" height="11" viewBox="0 0 13 11" xmlns="http://www.w3.org/2000/svg"><g stroke="#fff" fill="none" fill-rule="evenodd"><path d="M1 0l11 11M12 0L1 11"/></g></svg>
+            </div>
+        </div>
         <div class="scroll">
             <div class="log">Press enter to submit commands.</div>
             <form>

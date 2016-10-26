@@ -1,3 +1,5 @@
+import {Delegate} from 'dom-delegate';
+
 const commandList = {
   dep,
   help,
@@ -14,6 +16,7 @@ export function init() {
   if (!terminalNode) {
     return;
   }
+  const delegate = new Delegate(terminalNode);
   const scrollNode = terminalNode.querySelector('.scroll');
   const logNode = terminalNode.querySelector('.log');
   const formNode = terminalNode.querySelector('form');
@@ -90,6 +93,26 @@ export function init() {
   }, 200);
 
   setTimeout(() => fill(), 3000);
+
+  delegate.on('click', '.x, .close', () => {
+    terminalNode.classList.add('-closed');
+    terminalNode.classList.remove('-maximize');
+    terminalNode.classList.remove('-minimize');
+
+    setTimeout(() => {
+      terminalNode.classList.remove('-closed');
+    }, 3000);
+  });
+
+  delegate.on('click', '.minus, .minimize', () => {
+    terminalNode.classList.toggle('-minimize');
+    terminalNode.classList.remove('-maximize');
+  });
+
+  delegate.on('click', '.plus, .maximize', () => {
+    terminalNode.classList.toggle('-maximize');
+    terminalNode.classList.remove('-minimize');
+  });
 }
 
 function dep(arg = null) {

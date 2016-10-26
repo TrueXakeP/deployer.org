@@ -11,6 +11,22 @@
   cursor: text;
   -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: auto;
+  transition: transform 0.5s ease-in-out;
+
+  &.-closed {
+    transform: scale(0);
+  }
+
+  &.-maximize {
+    transform: scale(1.2);
+  }
+
+  &.-minimize {
+    transform: translateY(456px);
+    #input {
+      display: none;
+    }
+  }
 
   @include mobile {
     display: none;
@@ -52,32 +68,88 @@
     }
   }
 
-  .ext {
-    display: block;
+  .macos {
+    display: flex;
+    visibility: hidden;
     position: absolute;
     top: 18px;
-    width: 12px;
-    height: 12px;
-    border-radius: 100%;
-    cursor: pointer;
+    left: 20px;
 
-    &.x {
-      left: 20px;
-      background-color: #F0725E;
+    > div {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+      border-radius: 100%;
+      cursor: pointer;
+
+      &.x {
+        background-color: #F0725E;
+      }
+
+      &.minus {
+        background-color: #F8BD33;
+      }
+
+      &.plus {
+        background-color: #5EC034;
+      }
+
+      &:hover {
+        opacity: 0.5;
+      }
     }
+  }
 
-    &.minus {
-      left: 40px;
-      background-color: #F8BD33;
-    }
+  .windows {
+    display: flex;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    right: 5px;
 
-    &.plus {
-      left: 60px;
-      background-color: #5EC034;
-    }
+    > div {
+      display: inline-block;
+      position: relative;
+      width: 45px;
+      height: 30px;
+      cursor: pointer;
 
-    &:hover {
-      opacity: 0.5;
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      &.minimize:after {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 16px;
+        content: '';
+        width: 12px;
+        height: 16px;
+        border-bottom: 1px solid #fff;
+      }
+
+      &.maximize:after {
+        display: block;
+        position: absolute;
+        top: 9px;
+        left: 16px;
+        content: '';
+        width: 10px;
+        height: 10px;
+        border: 1px solid #fff;
+      }
+
+      &.close:hover {
+        background: rgba(255, 0, 0, 0.68);
+      }
+      
+      &.close svg {
+        position: absolute;
+        top: 9px;
+        left: 16px;
+      }
     }
   }
 
@@ -89,4 +161,12 @@
   img {
     height: 250px;
   }
+}
+
+html.-macos .terminal .macos {
+  visibility: visible;
+}
+
+html.-windows .terminal .windows {
+  visibility: visible;
 }
