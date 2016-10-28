@@ -14,17 +14,11 @@ $controller = $app['controllers_factory'];
 // Cache rendered response with validate file modify time.
 $controller->get('/{page}', function (Request $request, $page) use ($app) {
     $response = new Response();
-    $response->setPublic();
 
     $templateFile = new SplFileInfo($app['pages.path'] . '/' . $page . '.twig');
 
     if (!$templateFile->isReadable()) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-    }
-
-    $response->setLastModified(revisionTime([$templateFile]));
-    if ($response->isNotModified($request)) {
-        return $response;
     }
 
     $templateParams = [

@@ -13,17 +13,11 @@ $controller = $app['controllers_factory'];
 // Return manifest.
 $controller->get('/manifest.json', function (Request $request) use ($app) {
     $response = new Response();
-    $response->setPublic();
 
     $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
 
     if (!$file->isReadable()) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-    }
-
-    $response->setLastModified(new DateTime('@' . $file->getMTime()));
-    if ($response->isNotModified($request)) {
-        return $response;
     }
 
     $response->headers->set('Content-Type', 'application/json');

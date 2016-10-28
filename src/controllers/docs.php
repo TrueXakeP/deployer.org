@@ -14,17 +14,11 @@ $controller = $app['controllers_factory'];
 // Cache rendered response with validate file modify time.
 $controller->get('/docs/{page}', function ($page, Request $request) use ($app) {
     $response = new Response();
-    $response->setPublic();
 
     $file = new SplFileInfo($app['docs.path'] . '/' . $page . '.md');
 
     if (!$file->isReadable()) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-    }
-
-    $response->setLastModified(new DateTime('@' . $file->getMTime()));
-    if ($response->isNotModified($request)) {
-        return $response;
     }
 
     $response->headers->set('Content-Type', 'text/html');

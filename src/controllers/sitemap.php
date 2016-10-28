@@ -13,7 +13,6 @@ $controller = $app['controllers_factory'];
 
 $controller->get('/sitemap.xml', function (Request $request) use ($app) {
     $response = new Response();
-    $response->setPublic();
 
     $map = [];
 

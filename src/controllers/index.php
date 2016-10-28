@@ -12,7 +12,6 @@ $controller = $app['controllers_factory'];
 
 $controller->get('', function (Request $request) use ($app) {
     $response = new Response();
-    $response->setPublic();
     $templateFile = new SplFileInfo($app['pages.path'] . '/index.twig');
 
     $templateParams = [
@@ -41,11 +40,6 @@ $controller->get('', function (Request $request) use ($app) {
     }
 
     $templateParams['latest_deployer_version'] = $latest;
-
-    $response->setLastModified(revisionTime([$templateFile, $manifestFile]));
-    if ($response->isNotModified($request)) {
-        return $response;
-    }
 
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
