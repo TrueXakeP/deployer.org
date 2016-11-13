@@ -70,32 +70,44 @@ header.-home {
   }
 }
 
-.stickers {
+.support {
   @include content;
   margin-top: 100px;
   margin-bottom: 100px;
 
   h2 {
     font-size: 38px;
-    text-align: center;
+    text-align: left;
+  }
+  
+  .-become-a-backer {
+    background: #EB3349;
+    background: linear-gradient(to top, #EB3349 , #F45C43);
   }
 
   .sticker {
     display: inline-block;
-    margin-left: 15px;
+    margin-top: 30px;
+    margin-left: 30px;
 
     a {
       text-decoration: none;
       display: block;
     }
 
+    .preview {
+      min-height: 130px;
+    }
+
     .sticker-buy {
       display: inline-block;
       margin-top: 10px;
+      background: #232526;
+      background: linear-gradient(to top, #232526 , #414345);
     }
 
     img {
-      width: 150px;
+      width: 120px;
     }
   }
 }

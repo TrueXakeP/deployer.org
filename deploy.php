@@ -1,7 +1,8 @@
 <?php
+namespace Deployer;
 require 'recipe/common.php';
 
-// Set configurations
+// Configuration
 set('repository', 'git@github.com:deployphp/deployer.org.git');
 set('shared_files', ['config.ini']);
 set('shared_dirs', [
@@ -12,17 +13,18 @@ set('shared_dirs', [
 ]);
 set('writable_dirs', ['logs']);
 
-// Configure servers
+
+// Servers
 server('production', 'deployer.org')
     ->user('elfet')
     ->identityFile()
-    ->env('deploy_path', '/home/elfet/deployer.org');
+    ->set('deploy_path', '/home/elfet/deployer.org');
 
-/**
- * npm install.
- */
+
+// Tasks
+desc('npm install');
 task('npm:install', function () {
-    $releases = env('releases_list');
+    $releases = get('releases_list');
 
     if (isset($releases[1])) {
         if(run("if [ -d {{deploy_path}}/releases/{$releases[1]}/node_modules ]; then echo 'true'; fi")->toBool()) {
@@ -33,23 +35,17 @@ task('npm:install', function () {
     run("cd {{release_path}} && npm install");
 });
 
-/**
- * Build js/css.
- */
+desc('Build js/css');
 task('build',function () {
     run('cd {{release_path}} && node node_modules/.bin/gulp build');
 });
 
-/**
- * Restart php-fpm on success deploy.
- */
+desc('Restart PHP-FPM service');
 task('php-fpm:restart', function () {
     run('sudo service php5-fpm reload');
-})->desc('Restart PHP-FPM service');
+});
 
-/**
- * Main task
- */
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:release',
@@ -61,6 +57,5 @@ task('deploy', [
     'deploy:symlink',
     'php-fpm:restart',
     'cleanup',
-])->desc('Deploy your project');
-
+]);
 after('deploy', 'success');
