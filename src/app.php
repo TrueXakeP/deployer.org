@@ -82,3 +82,6 @@ $app->mount('/', include __DIR__ . '/controllers/download.php');
 $app->mount('/', include __DIR__ . '/controllers/sitemap.php');
 $app->mount('/', include __DIR__ . '/controllers/index.php');
 $app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, because match everything.
+
+// Error handling
+include __DIR__ . '/controllers/errors.php';
