@@ -259,6 +259,10 @@ footer {
   text-decoration: none;
   margin-top: 20px;
   display: inline-block;
+
+  &.-content {
+    float: right;
+  }
 }
 
 .not-found {

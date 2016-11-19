@@ -45,6 +45,9 @@ $app['pages.path'] = __DIR__ . '/pages';
 // Set path for docs local repository.
 $app['docs.path'] = __DIR__ . '/../repos/docs';
 
+// Blog path
+$app['blog.path'] = __DIR__ . '/../repos/blog';
+
 // Set path for recipes local repository.
 $app['recipes.path'] = __DIR__ . '/../repos/recipes';
 
@@ -81,6 +84,7 @@ $app->mount('/', include __DIR__ . '/controllers/recipes.php');
 $app->mount('/', include __DIR__ . '/controllers/download.php');
 $app->mount('/', include __DIR__ . '/controllers/sitemap.php');
 $app->mount('/', include __DIR__ . '/controllers/index.php');
+$app->mount('/', include __DIR__ . '/controllers/blog.php');
 $app->mount('/', include __DIR__ . '/controllers/pages.php'); // Must be last, because match everything.
 
 // Error handling

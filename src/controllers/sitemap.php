@@ -33,6 +33,7 @@ $controller->get('/sitemap.xml', function (Request $request) use ($app) {
         ->name('*.twig')
         ->files()
         ->notName('index.twig')
+        ->notName('404.twig')
         ->in($app['pages.path']);
 
     foreach ($finder as $file) {
@@ -51,6 +52,7 @@ $controller->get('/sitemap.xml', function (Request $request) use ($app) {
     $finder
         ->name('*.md')
         ->files()
+        ->notName('README.md')
         ->in($app['docs.path']);
 
     foreach ($finder as $file) {
@@ -76,6 +78,25 @@ $controller->get('/sitemap.xml', function (Request $request) use ($app) {
             'lastmod' => date('Y-m-d', $file->getMTime()),
             'changefreq' => 'weekly',
             'priority' => 0.5,
+        ];
+    }
+
+    // Blog
+
+    $finder = new Finder();
+    $finder
+        ->name('*.md')
+        ->files()
+        ->notName('index.md')
+        ->notName('README.md')
+        ->in($app['blog.path']);
+
+    foreach ($finder as $file) {
+        $map[] = [
+            'loc' => $app['base_url'] . '/blog/' . $file->getBasename('.md'),
+            'lastmod' => date('Y-m-d', $file->getMTime()),
+            'changefreq' => 'weekly',
+            'priority' => 0.9,
         ];
     }
 

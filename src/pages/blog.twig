@@ -1,0 +1,12 @@
+{% extends 'layout.twig' %}
+
+{% block header %}
+    <h1>{{ title }}</h1>
+{% endblock %}
+
+{% block content %}
+    {% if page is defined %}
+        <a class="edit-this -content" href="https://github.com/deployphp/blog/edit/master/{{ page }}.md">Edit this page</a>
+    {% endif %}
+    {{ content|raw }}
+{% endblock %}
