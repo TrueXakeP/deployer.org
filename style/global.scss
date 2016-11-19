@@ -170,6 +170,10 @@ footer {
   background: #4183c4;
   color: #fff;
 
+  &.-no-margin {
+    margin-top: 0;
+  }
+
   .container {
     display: flex;
 
@@ -263,4 +267,8 @@ footer {
     margin: 150px auto;
     width: 30vw;
   }
+}
+
+.discuss {
+  line-height: 0;
 }

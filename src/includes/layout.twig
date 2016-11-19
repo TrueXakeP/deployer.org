@@ -79,7 +79,7 @@
     </section>
 {% endblock %}
 
-<footer>
+<footer class="{{ footer_class is defined ? footer_class : '' }}">
     <div class="container">
         <span class="copy">
             &copy; 2013 &mdash; {{ "now" | date("Y") }} Deployer
