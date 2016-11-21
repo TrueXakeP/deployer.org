@@ -67,6 +67,6 @@ $controller->post('update/{what}', function (Request $request, $what) use ($app)
 
     return new Response('', Response::HTTP_FORBIDDEN, ['Content-Type' => 'text/plain']);
 })
-    ->assert('what', '(documentation)|(recipes)');
+    ->assert('what', '(documentation)|(recipes)|(blog)');
 
 return $controller;

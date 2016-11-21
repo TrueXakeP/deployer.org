@@ -146,6 +146,23 @@ $updateRecipesCommand->setCode(function ($input, $output) use ($app) {
 });
 $console->add($updateRecipesCommand);
 
+$updateBlogCommand = new \Symfony\Component\Console\Command\Command('update:blog');
+$updateBlogCommand->setCode(function ($input, $output) use ($app) {
+    $run = function ($command) use ($app) {
+        $process = new \Symfony\Component\Process\Process('cd ' . $app['blog.path'] . ' && ' . $command);
+        $process->mustRun();
+        return $process->getOutput();
+    };
+
+    if (is_file($app['blog.path'] . '/README.md')) {
+        $output->write($run('git reset --hard origin/master'));
+        $output->write($run('git pull https://github.com/deployphp/blog.git master 2>&1'));
+    } else {
+        $output->write($run('git clone --depth 1 https://github.com/deployphp/blog.git . 2>&1'));
+    }
+});
+$console->add($updateBlogCommand);
+
 
 $scheduleCommand = new \Symfony\Component\Console\Command\Command('schedule');
 $scheduleCommand->setCode(function ($input, $output) use ($app) {
@@ -154,7 +171,12 @@ $scheduleCommand->setCode(function ($input, $output) use ($app) {
     while (count($commands) > 0) {
         $command = array_shift($commands);
             
-        if (in_array($command, ['update:deployer', 'update:documentation', 'update:recipes'], true)) {
+        if (in_array($command, [
+            'update:deployer',
+            'update:documentation',
+            'update:recipes',
+            'update:blog',
+        ], true)) {
             
             // Remove same commands.
             $commands = array_filter($commands, function ($i) use ($command) {
