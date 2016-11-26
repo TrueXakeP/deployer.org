@@ -42,7 +42,7 @@ task('build',function () {
 
 desc('Restart PHP-FPM service');
 task('php-fpm:restart', function () {
-    run('sudo service php5-fpm reload');
+    run('sudo service php7.0-fpm reload');
 });
 
 desc('Deploy your project');
