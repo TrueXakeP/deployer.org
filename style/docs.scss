@@ -32,5 +32,9 @@
     @include desktop {
       margin-left: 200px;
     }
+
+    > svg {
+      width: 100%;
+    }
   }
 }

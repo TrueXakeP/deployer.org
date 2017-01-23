@@ -1,13 +1,25 @@
 .blog {
-  margin-bottom: 700px;
+  margin-top: 20px;
+  min-height: 800px;
 
-  > span {
-    font-size: 20px;
-    color: #6d6d6d;
-    margin-right: 30px;
+  > .post {
+    margin-bottom: 10px;
   }
 
-  > a {
+  > .post > .date {
+    width: 130px;
+    display: inline-block;
+    font-size: 20px;
+    color: #6d6d6d;
+  }
+
+  > .post > a {
     font-size: 26px;
+  }
+}
+
+.post {
+  > svg {
+    width: 100%;
   }
 }

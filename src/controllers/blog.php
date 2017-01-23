@@ -45,7 +45,7 @@ $controller->get('/blog/{page}', function ($page, Request $request) use ($app) {
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
 
-    list($body, $title) = parse_md(parse_links(file_get_contents($file->getPathname())));
+    list($body, $title) = parse_md(file_get_contents($file->getPathname()));
 
     $response->setContent(render('blog.twig', [
         'url' => url("/blog/$page"),
