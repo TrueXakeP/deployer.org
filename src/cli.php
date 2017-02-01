@@ -24,7 +24,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
         return $out;
     };
 
-    // Clear to be sure. 
+    // Clear to be sure.
     $run("rm -rf $releases/deployer");
 
     // Clone deployer to deployer dir in releases path.
@@ -55,12 +55,13 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
 
         try {
             $version = str_replace('v', '', $tag); // Set version from tag without leading "v".
-            
+
             // Checkout tag, update vendors, run build tool.
             $run("cd deployer && git checkout tags/$tag --force 2>&1");
 
-            // Require what Deployer suggests. 
+            // Require what Deployer suggests.
             $run('cd deployer && /usr/local/bin/composer require herzult/php-ssh:~1.0 --ignore-platform-reqs');
+            $run('cd deployer && /usr/local/bin/composer require deployer/phar-update:~2.0');
 
             // Install vendors.
             $run('cd deployer && /usr/local/bin/composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts --ignore-platform-reqs');
@@ -77,7 +78,7 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
                 'name' => 'deployer.phar',
                 'sha1' => sha1_file("$dir/deployer.phar"),
                 'url' => "https://deployer.org/releases/$tag/deployer.phar",
-                'version' => $version, 
+                'version' => $version,
             ];
 
             // Check if this version already in manifest.json.
@@ -170,27 +171,27 @@ $scheduleCommand->setCode(function ($input, $output) use ($app) {
 
     while (count($commands) > 0) {
         $command = array_shift($commands);
-            
+
         if (in_array($command, [
             'update:deployer',
             'update:documentation',
             'update:recipes',
             'update:blog',
         ], true)) {
-            
+
             // Remove same commands.
             $commands = array_filter($commands, function ($i) use ($command) {
                 return $i !== $command;
             });
-            
+
             $output->write("Running command $command.\n");
-            
+
             $process = new \Symfony\Component\Process\Process("php $app[cli] $command");
             $process->run();
             file_put_contents($app['logs.path'] . '/' . $command . '.log', $process->getOutput());
         }
     }
-    
+
     file_put_contents($app['schedule'], implode("\n", $commands));
 });
 $console->add($scheduleCommand);
