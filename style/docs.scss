@@ -3,12 +3,16 @@
 
   .nav {
     float: left;
-    min-width: 200px;
+    max-width: 200px;
     font-size: 19px;
 
     h3 {
       font-size: 20px;
       margin: 0 0 10px;
+    }
+
+    h4 {
+      margin-bottom: 5px;
     }
 
     ul {
@@ -28,6 +32,7 @@
 
   .page {
     margin-top: 15px;
+    min-height: 600px;
 
     @include desktop {
       margin-left: 200px;
@@ -35,6 +40,37 @@
 
     > svg {
       width: 100%;
+    }
+
+    .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
+
+      .octicon-link {
+        color: rgb(27, 31, 35);
+        vertical-align: middle;
+        visibility: hidden;
+      }
+    }
+
+    h1:hover,
+    h2:hover,
+    h3:hover,
+    h4:hover,
+    h5:hover,
+    h6:hover {
+      .anchor > .octicon-link {
+        visibility: visible;
+      }
+    }
+  }
+
+  #disqus_thread {
+    margin-top: 55px;
+
+    @include desktop {
+      margin-left: 200px;
     }
   }
 }

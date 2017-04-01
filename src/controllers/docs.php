@@ -26,6 +26,9 @@ $controller->get('/docs/{page}', function ($page, Request $request) use ($app) {
 
     list($body, $title) = parse_md(parse_links(file_get_contents($file->getPathname())));
 
+    // Add anchors
+    $body = add_anchors($body);
+
     // Get docs navigation from README.md
     list($menu, $_) = parse_md(parse_links(file_get_contents($app['docs.path'] . '/README.md')));
 

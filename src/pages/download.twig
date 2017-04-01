@@ -3,34 +3,45 @@
 {% set title = 'Download' %}
 
 {% block content %}
-    {% if manifest_data is null %}
-        <p>-</p>
-    {% else %}
-        {% for version_data in manifest_data %}
-            <div>
-                {% if version_data.highlighted %}
-                    <h3>
-                        <strong>
-                            Deployer {{ version_data.version }}
-                        </strong>
-                    </h3>
-                {% else %}
-                    <h3>
-                        Deployer {{ version_data.version }}
-                    </h3>
-                {% endif %}
+    <h3>Latest version</h3>
 
-                <a class="button" href="{{ version_data.url }}"
-                   onclick="ga('send', 'event', 'button', 'download', '{{ version_data.version }}');">
-                    Download deployer.phar ({{ version_data.version }})
-                </a>
-                <br>
-                {% if version_data.sha1 %}
-                <p>
-                    SHA1: <code>{{ version_data.sha1 }}</code>
-                </p>
-                {% endif %}
-            </div>
+    <p>
+        <a href="/deployer.phar" onclick="ga('send', 'event', 'button', 'download', '{{ latest_deployer_version }}');"
+           class="button">Download deployer.phar ({{ latest_deployer_version }})</a>
+    </p>
+
+    <p>
+        Or
+        {% include 'installation.twig' %}
+    </p>
+
+    <h3>Other versions</h3>
+
+    <table>
+        <tr>
+            <th></th>
+            <th>sha1</th>
+        </tr>
+        {% for version_data in manifest_data %}
+            <tr>
+                <td>
+                    <a href="{{ version_data.url }}"
+                       onclick="ga('send', 'event', 'button', 'download', '{{ version_data.version }}');">
+                        {% if version_data.highlighted %}
+                            <strong>
+                                {{ version_data.version }}
+                            </strong>
+                        {% else %}
+                            {{ version_data.version }}
+                        {% endif %}
+                    </a>
+                </td>
+                <td>
+                    {% if version_data.sha1 %}
+                        <code>{{ version_data.sha1 }}</code>
+                    {% endif %}
+                </td>
+            </tr>
         {% endfor %}
-    {% endif %}
+    </table>
 {% endblock %}

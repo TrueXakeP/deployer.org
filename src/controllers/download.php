@@ -65,6 +65,7 @@ $controller->get('/download', function (Request $request) use ($app) {
     // Getting the manifest data
     $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
     $manifestData = null;
+    $latest = new \Herrera\Version\Version();
 
     $response = new Response();
 
@@ -108,6 +109,10 @@ $controller->get('/download', function (Request $request) use ($app) {
                 $manifestData[$key]['highlighted'] = true;
                 $prevMajorVersion = $version->getMajor();
             }
+
+            if (\Herrera\Version\Comparator::isLessThan($latest, $version)) {
+                $latest = $version;
+            }
         }
     }
 
@@ -119,6 +124,7 @@ $controller->get('/download', function (Request $request) use ($app) {
         $app['twig']->render('download.twig', [
                 'url' => url('/download'),
                 'manifest_data' => $manifestData,
+                'latest_deployer_version' => $latest,
             ]
         ));
 
