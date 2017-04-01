@@ -1,5 +1,6 @@
 <?php
 namespace Deployer;
+
 require 'recipe/common.php';
 
 // Configuration
@@ -15,11 +16,7 @@ set('writable_dirs', ['logs']);
 
 
 // Servers
-server('production', 'deployer.org')
-    ->user('elfet')
-    ->identityFile()
-    ->set('deploy_path', '/home/elfet/deployer.org');
-
+host('deployer.org')->set('deploy_path', '/home/elfet/deployer.org');
 
 // Tasks
 desc('npm install');
