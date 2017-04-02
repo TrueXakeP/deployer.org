@@ -35,39 +35,42 @@ $updateDeployerCommand->setCode(function ($input, $output) use ($app) {
 
     $manifest = [];
 
-    // Read manifest if it is exist.
     if (is_readable("$releases/manifest.json")) {
         $manifest = json_decode(file_get_contents("$releases/manifest.json"), true);
     }
 
-    // For all tags.
+    $inManifest = function ($version) use ($manifest) {
+        foreach ($manifest as $i) {
+            if ($i['version'] === $version) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     foreach (explode("\n", $tags) as $tag) {
         if (empty($tag)) {
             continue;
         }
 
-        // Skip if tag already released.
-        if (is_dir($dir = "$releases/$tag")) {
+        $version = str_replace('v', '', $tag);
+        $dir = "$releases/$tag";
+
+        if ($inManifest($version)) {
             continue;
         }
 
         $output->write("Building Phar for $tag tag.\n");
 
         try {
-            $version = str_replace('v', '', $tag); // Set version from tag without leading "v".
-
             // Checkout tag, update vendors, run build tool.
             $run("cd deployer && git checkout tags/$tag --force 2>&1");
-
-            // Require what Deployer suggests.
-            $run('cd deployer && /usr/local/bin/composer require herzult/php-ssh:~1.0 --ignore-platform-reqs');
-            $run('cd deployer && /usr/local/bin/composer require deployer/phar-update:~2.0 --ignore-platform-reqs');
 
             // Install vendors.
             $run('cd deployer && /usr/local/bin/composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts --ignore-platform-reqs');
 
             // And build.
-            $run('cd deployer && php build -v="' . $version . '"');
+            $run('cd deployer && php bin/build -v="' . $version . '"');
 
             // Create new dir and copy phar there.
             mkdir($dir);
