@@ -2,6 +2,7 @@
 namespace Deployer;
 
 require 'recipe/common.php';
+require 'recipe/npm.php';
 
 // Configuration
 set('repository', 'git@github.com:deployphp/deployer.org.git');
