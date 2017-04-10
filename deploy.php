@@ -2,11 +2,14 @@
 namespace Deployer;
 
 require 'recipe/common.php';
-require 'recipe/npm.php';
+require 'npm.php';
 
 // Configuration
+
 set('repository', 'git@github.com:deployphp/deployer.org.git');
-set('shared_files', ['config.ini']);
+set('shared_files', [
+    'config.ini'
+]);
 set('shared_dirs', [
     'logs',
     'repos',
@@ -15,28 +18,16 @@ set('shared_dirs', [
 ]);
 set('writable_dirs', ['logs']);
 
+// Hosts
 
-// Servers
-host('deployer.org')->set('deploy_path', '/home/elfet/deployer.org');
+host('deployer.org')
+    ->set('deploy_path', '/home/elfet/deployer.org');
+
 
 // Tasks
-desc('npm install');
-task('npm:install', function () {
-    $releases = get('releases_list');
-
-    if (isset($releases[1])) {
-        if(run("if [ -d {{deploy_path}}/releases/{$releases[1]}/node_modules ]; then echo 'true'; fi")->toBool()) {
-            run("cp --recursive {{deploy_path}}/releases/{$releases[1]}/node_modules {{release_path}}");
-        }
-    }
-
-    run("cd {{release_path}} && npm install");
-});
 
 desc('Build js/css');
-task('build',function () {
-    run('cd {{release_path}} && node node_modules/.bin/gulp build');
-});
+task('build', 'cd {{release_path}} && node node_modules/.bin/gulp build');
 
 desc('Restart PHP-FPM service');
 task('php-fpm:restart', function () {
@@ -55,5 +46,5 @@ task('deploy', [
     'deploy:symlink',
     'php-fpm:restart',
     'cleanup',
+    'success',
 ]);
-after('deploy', 'success');

@@ -3,6 +3,8 @@
         "silex/silex": "^2.0",
         "twig/twig": ">=1.8,<2.0-dev",
         "erusev/parsedown": "^1.4",
+        "deployer/deployer": "^5.0@dev",
+        "deployer/recipes": "dev-master@dev",
         "symfony/console": "^2.6",
         "symfony/process": "^2.6",
         "herrera-io/version": "^1.0",
