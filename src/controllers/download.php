@@ -65,6 +65,7 @@ $controller->get('/download', function (Request $request) use ($app) {
     // Getting the manifest data
     $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
     $manifestData = null;
+    $latestVersion = new \Herrera\Version\Version();
     $latest = null;
 
     $response = new Response();
@@ -110,7 +111,8 @@ $controller->get('/download', function (Request $request) use ($app) {
                 $prevMajorVersion = $version->getMajor();
             }
 
-            if (\Herrera\Version\Comparator::isLessThan($latest, $version)) {
+            if (\Herrera\Version\Comparator::isLessThan($latestVersion, $version)) {
+                $latestVersion = $version;
                 $latest = $data;
             }
         }
