@@ -40,7 +40,7 @@ $controller->get('/{stable}deployer.phar', function (Request $request, $stable) 
 
     // Find latest stable version or unstable if $stable variable not equals empty string.
 
-    $latest  = new \Herrera\Version\Version();
+    $latest = new \Herrera\Version\Version();
     $builder = new \Herrera\Version\Builder();
 
     foreach ($manifest as $row) {
@@ -65,7 +65,7 @@ $controller->get('/download', function (Request $request) use ($app) {
     // Getting the manifest data
     $file = new SplFileInfo($app['releases.path'] . '/manifest.json');
     $manifestData = null;
-    $latest = new \Herrera\Version\Version();
+    $latest = null;
 
     $response = new Response();
 
@@ -84,7 +84,7 @@ $controller->get('/download', function (Request $request) use ($app) {
 
         // Sorting the versions in descending order
         $builder = new \Herrera\Version\Builder();
-        uasort($manifestData, function($a, $b) use ($builder) {
+        uasort($manifestData, function ($a, $b) use ($builder) {
             if ($a['version'] === $b['version']) {
                 return 0;
             }
@@ -111,7 +111,7 @@ $controller->get('/download', function (Request $request) use ($app) {
             }
 
             if (\Herrera\Version\Comparator::isLessThan($latest, $version)) {
-                $latest = $version;
+                $latest = $data;
             }
         }
     }
@@ -120,13 +120,13 @@ $controller->get('/download', function (Request $request) use ($app) {
     $response->headers->set('Content-Type', 'text/html');
     $response->setCharset('UTF-8');
     $response->setContent(
-    // I couldn't get myself to use that `render()` function... ><
-        $app['twig']->render('download.twig', [
+        render('download.twig', [
                 'url' => url('/download'),
                 'manifest_data' => $manifestData,
-                'latest_deployer_version' => $latest,
+                'latest' => $latest,
             ]
-        ));
+        )
+    );
 
     return $response;
 });

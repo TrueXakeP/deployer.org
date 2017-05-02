@@ -6,8 +6,8 @@
     <h3>Latest version</h3>
 
     <p>
-        <a href="/deployer.phar" onclick="ga('send', 'event', 'button', 'download', '{{ latest_deployer_version }}');"
-           class="button">Download deployer.phar ({{ latest_deployer_version }})</a>
+        <a href="{{ latest.url }}" onclick="ga('send', 'event', 'button', 'download', '{{ latest.version }}');"
+           class="button">Download deployer.phar ({{ latest.version }})</a>
     </p>
 
     <p>
