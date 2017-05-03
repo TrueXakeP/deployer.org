@@ -2,7 +2,8 @@
 namespace Deployer;
 
 require 'recipe/common.php';
-require 'npm.php';
+require 'recipe/npm.php';
+//require 'repos/recipes/recipe/slack.php';
 
 // Configuration
 
@@ -17,6 +18,10 @@ set('shared_dirs', [
     'public/assets'
 ]);
 set('writable_dirs', ['logs']);
+
+set('slack', [
+    'access_token' => 'xoxp-162408975313-162379416432-167035038322-6a7e439606aa55906f0e31a329b39907',
+]);
 
 // Hosts
 
