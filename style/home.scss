@@ -19,6 +19,40 @@ header.-home {
   }
 }
 
+.try-pro {
+  text-align: center;
+  font-size: 20px;
+  line-height: 30px;
+  padding: 6px 0;
+  background-color: #e8d73a;
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .name {
+    color: #000;
+    text-decoration: none;
+    border-bottom: dashed 1px #000000;
+  }
+
+  .find-out-more {
+    color: #161616;
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: solid 1px #7b7b7b;
+    vertical-align: top;
+    white-space: nowrap;
+
+    &:hover {
+      border-color: #000;
+      background-color: #feec3d;
+    }
+  }
+}
+
 .getting-started {
   @include content;
 

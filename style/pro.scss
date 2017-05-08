@@ -1,0 +1,73 @@
+$background-color: #000;
+
+body.-pro {
+  background-color: $background-color;
+  color: #fff;
+
+}
+
+header.-pro {
+  nav {
+    background-color: $background-color;
+    border-color: #484848;
+  }
+}
+
+section.-pro {
+  h1 {
+    font-size: 54px;
+    color: #fff;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 26px;
+    color: #fff;
+    text-align: center;
+  }
+
+  .beta {
+    color: #f33a60;
+    font-size: 20px;
+    vertical-align: top;
+    font-weight: bold;
+  }
+
+  .printscreen {
+    margin-top: 70px;
+    margin-bottom: 90px;
+    text-align: center;
+
+    img {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 5px;
+    }
+  }
+
+  .in-beta {
+    text-align: center;
+    margin: 0 auto 70px;
+  }
+
+  form {
+    background-color: $background-color;
+
+    #mc-embedded-subscribe {
+      background-color: #b42d4b;
+    }
+  }
+
+  .letter {
+    margin: 90px auto;
+    text-align: center;
+
+    .icon-dep {
+      width: 150px;
+    }
+  }
+}
+
+footer.-pro {
+  background-color: $background-color;
+}

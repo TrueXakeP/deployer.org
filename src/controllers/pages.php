@@ -30,6 +30,8 @@ $controller->get('/{page}', function (Request $request, $page) use ($app) {
     $response->setContent(render($page . '.twig', $templateParams));
 
     return $response;
-})->value('page', 'index');
+})
+    ->assert('page', '.+')
+    ->value('page', 'index');
 
 return $controller;
