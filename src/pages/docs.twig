@@ -11,6 +11,16 @@
             <small>
                 <a class="edit-this" href="https://github.com/deployphp/docs/edit/master/{{ page }}.md">Edit this page</a>
             </small>
+
+            <label class="version">
+                Version:
+                <select onchange="this.value ? window.location.href = this.value : void 0">
+                    <option value="">5.x</option>
+                    <option value="https://github.com/deployphp/docs/tree/4.x">4.x</option>
+                    <option value="https://github.com/deployphp/docs/tree/3.x">3.x</option>
+                    <option value="https://github.com/deployphp/docs/tree/2.x">2.x</option>
+                </select>
+            </label>
         </div>
 
         <div class="page">
