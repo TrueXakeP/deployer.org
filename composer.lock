@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "deployer/deployer",
-            "version": "v5.0.0-beta.2",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deployphp/deployer.git",
-                "reference": "a9b793bf9879d93e790dc59f1d7143554efe8b9e"
+                "reference": "123498f3a3c33a112868239ab14bc9aaa0d1a49b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/deployer/zipball/a9b793bf9879d93e790dc59f1d7143554efe8b9e",
-                "reference": "a9b793bf9879d93e790dc59f1d7143554efe8b9e",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/123498f3a3c33a112868239ab14bc9aaa0d1a49b",
+                "reference": "123498f3a3c33a112868239ab14bc9aaa0d1a49b",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +57,7 @@
             ],
             "description": "Deployment Tool",
             "homepage": "https://deployer.org",
-            "time": "2017-04-08T14:20:34+00:00"
+            "time": "2017-05-15T03:56:37+00:00"
         },
         {
             "name": "deployer/phar-update",
