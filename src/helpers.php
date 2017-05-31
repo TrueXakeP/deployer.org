@@ -78,7 +78,7 @@ function parse_md($content)
  */
 function parse_links($content)
 {
-    return preg_replace('/\((.*?)\.md\)/', '(' . request()->getBaseUrl() . '/docs/$1)', $content);
+    return preg_replace('/\((.*?)\.md(.*?)\)/', '(' . request()->getBaseUrl() . '/docs/$1$2)', $content);
 }
 
 /**
