@@ -53,13 +53,3 @@ task('deploy', [
     'cleanup',
     'success',
 ]);
-
-desc('Publish docs');
-task('docs:publish', function () {
-    cd(__DIR__ . '/repos/docs');
-    run('git checkout published');
-    run('git pull --rebase origin published');
-    run('git merge master --ff');
-    run('git push origin published');
-    run('git checkout master');
-})->local();

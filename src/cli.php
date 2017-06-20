@@ -125,7 +125,7 @@ $updateDocumentationCommand->setCode(function ($input, $output) use ($app) {
 
     if (is_file($app['docs.path'] . '/README.md')) {
         $output->write($run('git reset --hard origin/published'));
-        $output->write($run('git pull https://github.com/deployphp/docs.git published 2>&1'));
+        $output->write($run('git pull https://github.com/deployphp/docs.git master 2>&1'));
     } else {
         $output->write($run('git clone --depth 1 https://github.com/deployphp/docs.git . 2>&1'));
     }
