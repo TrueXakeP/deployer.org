@@ -1,0 +1,15 @@
+{% extends 'layout.twig' %}
+{% set title = 'Slack Installation' %}
+
+{% block content %}
+    <div class="container">
+        <p>
+            Add next code you you <code>deploy.php</code> file
+        </p>
+
+        <pre><code class="language-php hljs">set('slack_webhook', '{{ webhook }}');</code></pre>
+
+        Back to <a href="/recipes/slack">slack recipe documentation</a>.
+    </div>
+{% endblock %}
+

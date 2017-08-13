@@ -33,7 +33,7 @@ $controller->get('/recipes/{page}', function ($page, Request $request) use ($app
 
     $content = file_get_contents($file->getPathname());
     $content = preg_replace('/\(docs\/(.*?)\.md\)/', '(' . request()->getBaseUrl() . '/recipes/$1)', $content);
-    
+
     list($body, $title) = parse_md($content);
 
     // Generate menu based on files list
@@ -68,5 +68,26 @@ $controller->get('/recipes/{page}', function ($page, Request $request) use ($app
     ->assert('page', '[\w/-]+')
     ->value('page', 'index');
 
+$controller->get('/slack', function (Request $request) use ($app) {
+    $query = http_build_query([
+        'client_id' => $app['slack_client_id'],
+        'client_secret' => $app['slack_client_secret'],
+        'code' => $request->get('code'),
+    ]);
+    $response = file_get_contents("https://slack.com/api/oauth.access?$query");
+    $data = json_decode($response, true);
+    $token = $data['ok'] ? $data['access_token'] : $data['error'];
+    $hook = $data['ok'] ? $data['incoming_webhook']['url'] : $data['error'];
+
+
+    $response = new Response();
+    $response->setContent(render('slack.twig', [
+        'url' => url('/slack'),
+        'token' => $token,
+        'webhook' => $hook,
+    ]));
+
+    return $response;
+});
 
 return $controller;

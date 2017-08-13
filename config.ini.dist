@@ -1,3 +1,5 @@
 debug = true
 cache = false
 github_secret = SECRET
+slack_client_id = .
+slack_client_secret = SECRET
